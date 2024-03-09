@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\forgetPasswordRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,6 +20,16 @@ class ForgetPasswordController extends Controller
         $user->notify(new resetPassword);
         return response()->json([
             "message"=>"reset password has been sent"
+        ]);
+    }
+    public function reset(forgetPasswordRequest $request){
+        $validated=$request->validated();
+        $user=User::where("email",$validated['email'])->first();
+        $user->update(['password'],$validated->password);
+        return response()->json([
+            "data" => $user,
+            "access_token" => $user->createToken("api_token")->plainTextToken,
+            "token_type" => "bearer"
         ]);
     }
 }

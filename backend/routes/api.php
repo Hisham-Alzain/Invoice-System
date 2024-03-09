@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/password/reset-link', [ForgetPasswordController::class, 'forgotPassword']);
-Route::get('',[]);
+Route::post('/reset-password', [ForgetPasswordController::class, 'reset'])->name('password.reset');
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
