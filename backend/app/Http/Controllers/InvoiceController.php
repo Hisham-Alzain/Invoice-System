@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\invoice;
+use App\Http\Resources\InvoiceCollection;
 use App\Http\Requests\StoreinvoiceRequest;
 use App\Http\Requests\UpdateinvoiceRequest;
 
@@ -13,7 +14,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        return new InvoiceCollection(Invoice::all());
     }
 
     /**
