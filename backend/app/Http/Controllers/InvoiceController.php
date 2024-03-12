@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\InvoiceResource;
 use App\Models\invoice;
 use App\Http\Resources\InvoiceCollection;
 use App\Http\Requests\StoreinvoiceRequest;
@@ -30,7 +31,12 @@ class InvoiceController extends Controller
      */
     public function store(StoreinvoiceRequest $request)
     {
-        //
+        $validated=$request->validated();
+        $invoice=invoice::create($validated);
+        return response()->json([
+            "message"=>"invoice created successfully",
+            "data"=>new InvoiceResource($invoice)
+        ]);
     }
 
     /**
@@ -38,7 +44,7 @@ class InvoiceController extends Controller
      */
     public function show(invoice $invoice)
     {
-        //
+        return new InvoiceResource($invoice);
     }
 
     /**
@@ -54,7 +60,9 @@ class InvoiceController extends Controller
      */
     public function update(UpdateinvoiceRequest $request, invoice $invoice)
     {
-        //
+        $validated= $request->validated(); 
+        $invoice->update($validated);
+        return new InvoiceResource($invoice);
     }
 
     /**
@@ -62,6 +70,9 @@ class InvoiceController extends Controller
      */
     public function destroy(invoice $invoice)
     {
-        //
+        $invoice->delete();
+        return response()->json([
+            "message"=> "the invoice has been deleted successfully",
+        ]);
     }
 }
