@@ -7,6 +7,7 @@ use App\Models\invoice;
 use App\Http\Resources\InvoiceCollection;
 use App\Http\Requests\StoreinvoiceRequest;
 use App\Http\Requests\UpdateinvoiceRequest;
+use App\Models\invoice_item;
 
 class InvoiceController extends Controller
 {
@@ -31,11 +32,16 @@ class InvoiceController extends Controller
      */
     public function store(StoreinvoiceRequest $request)
     {
-        $validated=$request->validated();
-        $invoice=invoice::create($validated);
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->user()->id;
+        $invoice = invoice::create($validated);
+        foreach ($validated['invoice_items'] as $invoice_item) {
+            $invoice_item['invoice_id'] = $invoice['id'];
+            invoice_item::create($invoice_item);
+        }
         return response()->json([
-            "message"=>"invoice created successfully",
-            "data"=>new InvoiceResource($invoice)
+            "message" => "invoice created successfully",
+            "data" => new InvoiceResource($invoice)
         ]);
     }
 
@@ -60,7 +66,20 @@ class InvoiceController extends Controller
      */
     public function update(UpdateinvoiceRequest $request, invoice $invoice)
     {
-        $validated= $request->validated(); 
+        $validated = $request->validated();
+        $invoice_items = $invoice->invoice_items;
+        if ($validated['invoice_items']) {
+            foreach ($validated['invoice_items'] as $vali) {
+                foreach ($invoice_items as $invoice_item) {
+                    if ($vali['item_id'] == $invoice_item['item_id']) {
+                        $invoice_item->update($vali);
+                    } else {
+                        $vali['invoice_id'] = $invoice['id'];
+                        invoice_item::create($vali);
+                    }
+                }
+            }
+        }
         $invoice->update($validated);
         return new InvoiceResource($invoice);
     }
@@ -72,7 +91,7 @@ class InvoiceController extends Controller
     {
         $invoice->delete();
         return response()->json([
-            "message"=> "the invoice has been deleted successfully",
+            "message" => "the invoice has been deleted successfully",
         ]);
     }
 }

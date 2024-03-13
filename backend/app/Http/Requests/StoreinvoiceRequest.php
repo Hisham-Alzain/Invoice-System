@@ -24,11 +24,13 @@ class StoreinvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "release_date"=>["required","date"],
-            "total_amount"=>["required","integer"],
-            "billing_status"=>['required','in:paid,unpaid'],
-            "user_id"=>['required','exists:users'],
-            "client_id"=>['required','exists:clients']
+            'client_id' => 'required|exists:clients,id',
+            'release_date' => 'required|date',
+            'billing_status' => 'required|in:paid,unpaid',
+            'total_amount' => 'required|numeric',
+            'invoice_items' => 'required|array|min:1',
+            'invoice_items.*.item_id' => 'required|exists:items,id',
+            'invoice_items.*.qtn' => 'required|integer',
         ];
     }
     protected function failedValidation(Validator $validator)
