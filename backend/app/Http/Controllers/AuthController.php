@@ -9,6 +9,7 @@ use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\loginRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\registerRequest;
 use App\Http\Requests\forgetPasswordRequest;
@@ -22,6 +23,7 @@ class AuthController extends Controller
             ],401);            
         }
         $validated = $request->validated();
+        $validated['password']=Hash::make($validated['password']);
         if ($validated) {
             $user = User::create($validated);
         }
