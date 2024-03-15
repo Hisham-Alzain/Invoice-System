@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+
 const Login = () => {
   const [results, setResults] = useState([])
 
   const [Email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -14,6 +16,10 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
+  const handleForgotPasswordEmailChange = (event) => {
+    setForgotPasswordEmail(event.target.value);
+  };
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     // Perform login logic here, such as making an API request to validate the credentials
@@ -41,9 +47,13 @@ const Login = () => {
 
     console.log('Email:', Email);
     console.log('Password:', password);
+    window.location.href = '/';
     // Reset the form fields
     setEmail('');
     setPassword('');
+  };
+  const handleForgotPasswordSubmit = (event) => {
+    window.location.href = '/forgetPassword';
   };
 
   return (
@@ -67,6 +77,9 @@ const Login = () => {
         />
       </div>
       <button type="submit">Login</button>
+      <button type="button" onClick={handleForgotPasswordSubmit}>
+        Forgot Password?
+      </button>
     </form>
   );
 };
