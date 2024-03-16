@@ -29,6 +29,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'token'
     ];
 
     /**
@@ -61,7 +62,7 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
     public function routeNotificationForMail($notification)
-{
-    return $this->email;
-}
+    {
+        return $this->email;
+    }
 }

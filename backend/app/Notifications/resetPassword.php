@@ -11,12 +11,11 @@ class resetPassword extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    public $token;
+
+    public function __construct($token)
     {
-        //
+        $this->token = $token;
     }
 
     /**
@@ -34,7 +33,7 @@ class resetPassword extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $resetUrl = url('/reset-password/'.$notifiable->token);
+        $resetUrl = url('http://localhost:5173/reset-password?token='.$this->token );
 
         return (new MailMessage)
             ->subject('Change Password Request')

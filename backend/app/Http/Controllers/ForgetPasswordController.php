@@ -17,7 +17,7 @@ class ForgetPasswordController extends Controller
             'email' => 'required|email',
         ]);
         $user=User::where("email",$request->email)->first();
-        $user->notify(new resetPassword);
+        $user->notify(new resetPassword($user->createToken("api_token")->plainTextToken));
         return response()->json([
             "message"=>"reset password has been sent"
         ]);
@@ -25,7 +25,7 @@ class ForgetPasswordController extends Controller
     public function reset(forgetPasswordRequest $request){
         $validated=$request->validated();
         $user=User::where("email",$validated['email'])->first();
-        $user->update(['password'],$validated->password);
+        $user->update($validated);
         return response()->json([
             "data" => $user,
             "access_token" => $user->createToken("api_token")->plainTextToken,

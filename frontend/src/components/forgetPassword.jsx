@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -9,7 +10,6 @@ const ForgetPassword = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Perform login logic here, such as making an API request to validate the credentials
 
     
     fetch("http://127.0.0.1:8000/api/password/reset-link", {
@@ -25,6 +25,7 @@ const ForgetPassword = () => {
         })
         .then(data => {
         console.log(data);
+        setSuccessMessage('Reset password email has been sent.');
         })
         .catch(err => {
         console.log(123123);
@@ -51,6 +52,7 @@ const ForgetPassword = () => {
         </div>
         <button type="submit">Reset Password</button>
       </form>
+      {successMessage && <p>{successMessage}</p>}
     </div>
   );
 };

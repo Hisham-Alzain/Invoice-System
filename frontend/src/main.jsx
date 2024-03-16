@@ -5,6 +5,7 @@ import './index.css'
 import Login from './components/login';
 import Register from './components/register';
 import ForgetPassword from './components/forgetPassword';
+import ResetPassword from './components/resetPassword';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="forgetPassword" element={<ForgetPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>,
   </React.StrictMode>,
