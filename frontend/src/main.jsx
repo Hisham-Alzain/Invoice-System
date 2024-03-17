@@ -6,6 +6,7 @@ import Login from './components/login';
 import Register from './components/register';
 import ForgetPassword from './components/forgetPassword';
 import ResetPassword from './components/resetPassword';
+import Dashboard from './components/Dashboard';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -13,6 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/main" element={<Dashboard />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="forgetPassword" element={<ForgetPassword />} />

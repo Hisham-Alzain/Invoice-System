@@ -1,46 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [email, setEmail] = useState('');
   const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
 
+  const { token } = useParams();
+
   useEffect(() => {
-    // Extract email from the token in the component's initial render
-    const { token } = match.params;
     const decodedToken = decodeURIComponent(token);
-    const emailFromToken = getEmailFromToken(decodedToken);
-    setEmail(emailFromToken);
-  }, [match.params]);
+
+    const getEmailFromToken = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/items", {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + decodedToken
+          }
+        });
+        const data = await response.json();
+        setEmail(data);
+      } catch (err) {
+        console.log(err.JSON);
+      }
+    };
+
+    getEmailFromToken();
+  }, [token]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch("http://127.0.0.1:8000/api/password/reset", {
-        method: 'POST',
-        headers: {"Content-Type" : "application/json"},
-        body: JSON.stringify(
-            {
-                "email":email,
-                "password":newPassword
-            })
-        })
-        .then(data => {
-        return data.json();
-        })
-        .then(data => {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: newPassword
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
         console.log(data);
         setSuccess(true);
         setSuccessMessage('The password has been changed successfully');
-        })
-        .catch(err => {
+      })
+      .catch(err => {
         console.log(err);
-        });
-      
+      });
 
-    console.log('Email:', email);
     // Reset the form fields
-    setEmail('');
+    setNewPassword('');
   };
 
   return (
@@ -48,19 +61,12 @@ const ChangePassword = () => {
       <h2>Change Password</h2>
       {success ? (
         <div>
-          <p>Your password has been changed successfully.</p>
+          <p>{successMessage}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
-         
           <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <label>Email: {email}</label>
           </div>
           <div>
             <label>New Password:</label>

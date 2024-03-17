@@ -15,10 +15,6 @@ const Login = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-
-  const handleForgotPasswordEmailChange = (event) => {
-    setForgotPasswordEmail(event.target.value);
-  };
   
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -47,7 +43,7 @@ const Login = () => {
 
     console.log('Email:', Email);
     console.log('Password:', password);
-    window.location.href = '/';
+    window.location.href = '/main';
     // Reset the form fields
     setEmail('');
     setPassword('');

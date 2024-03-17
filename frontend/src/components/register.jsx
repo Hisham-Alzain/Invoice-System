@@ -59,7 +59,7 @@ const Register = () => {
         .catch(err => {
         console.log(err);
         });
-        window.location.href = '/';
+        window.location.href = '/main';
     // Reset the form fields
     setName('');
     setEmail('');
