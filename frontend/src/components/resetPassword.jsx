@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -7,33 +7,40 @@ const ChangePassword = () => {
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
-
-  const { token } = query.getEmailFromToken();
+  const location = useLocation();
 
   useEffect(() => {
-    const decodedToken = decodeURIComponent(token);
-
     const getEmailFromToken = async () => {
       try {
+        const params = new URLSearchParams(location.search);
+        const token = params.get('token');
+        console.log(token);
+
         const response = await fetch("http://127.0.0.1:8000/api/user", {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + decodedToken
+            "Authorization": "Bearer " + token
           }
         });
-        const data = await response.json();
-        setEmail(data);
+
+        if (response.ok) {
+          const data = await response.json();
+          setEmail(data.email);
+        } else {
+          throw new Error('Failed to fetch user data');
+        }
       } catch (err) {
-        console.log(decodedToken);
+        console.log(err);
       }
     };
 
     getEmailFromToken();
-  }, [token]);
+  }, [location]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     fetch("http://127.0.0.1:8000/api/password/reset", {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
@@ -58,7 +65,6 @@ const ChangePassword = () => {
 
   return (
     <div>
-      <h2>{token}</h2>
       {success ? (
         <div>
           <p>{successMessage}</p>
