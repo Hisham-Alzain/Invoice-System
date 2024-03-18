@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './HomePage.css'; // Import the CSS file for the home page
+import './css/HomePage.css'; // Import the CSS file for the home page
 
 const Dashboard = () => {
-    
+
   return (
+<html>
+<body>
     <div className="homepage">
       <div className="sidebar">
         <h2>Invoice System</h2>
@@ -26,15 +28,12 @@ const Dashboard = () => {
       <div className="content">
         <h1>Invoice System</h1>
         <div className="cta-buttons">
-          <Link to="/invoices" className="btn btn-primary">
-            View Invoices
-          </Link>
-          <Link to="/create-invoice" className="btn btn-secondary">
-            Create New Invoice
-          </Link>
+
         </div>
       </div>
     </div>
+    </body>
+    </html>
   );
 };
 

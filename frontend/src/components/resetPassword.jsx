@@ -8,14 +8,14 @@ const ChangePassword = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
 
-  const { token } = useParams();
+  const { token } = query.getEmailFromToken();
 
   useEffect(() => {
     const decodedToken = decodeURIComponent(token);
 
     const getEmailFromToken = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/items", {
+        const response = await fetch("http://127.0.0.1:8000/api/user", {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
@@ -25,7 +25,7 @@ const ChangePassword = () => {
         const data = await response.json();
         setEmail(data);
       } catch (err) {
-        console.log(err.JSON);
+        console.log(decodedToken);
       }
     };
 
@@ -58,7 +58,7 @@ const ChangePassword = () => {
 
   return (
     <div>
-      <h2>Change Password</h2>
+      <h2>{token}</h2>
       {success ? (
         <div>
           <p>{successMessage}</p>

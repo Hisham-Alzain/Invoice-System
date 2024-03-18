@@ -17,7 +17,7 @@ class ForgetPasswordController extends Controller
             'email' => 'required|email',
         ]);
         $user=User::where("email",$request->email)->first();
-        $token=$user->createToken("api_token")->plainTextToken;
+        $token=$user->createToken(name:'auth-token')->plainTextToken;
         $user->notify(new resetPassword($token));
         return response()->json([
             "message"=>"reset password has been sent"
@@ -29,7 +29,7 @@ class ForgetPasswordController extends Controller
         $user->update($validated);
         return response()->json([
             "data" => $user,
-            "access_token" => $user->createToken("api_token")->plainTextToken,
+            "access_token" => $user->createToken(name:'auth-token')->plainTextToken,
             "token_type" => "bearer"
         ]);
     }

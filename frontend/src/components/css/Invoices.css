@@ -1,0 +1,146 @@
+/* Invoices.css */
+
+.invoices-page {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar a:hover {
+  background-color: #007bff;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f4f4f4;
+  color: #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.content h1 {
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.content p {
+  margin-bottom: 15px;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.cta-buttons .btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.cta-buttons .btn:hover {
+  background-color: #0056b3;
+}
+
+/* Custom styles for Invoices component */
+
+/* Style individual invoice view */
+.invoices-page .content div {
+  margin-bottom: 30px;
+}
+
+.invoices-page .content h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.invoices-page .content p {
+  margin-bottom: 15px;
+}
+
+.invoices-page .content .cta-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.invoices-page .content .cta-buttons .btn {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.invoices-page .content .cta-buttons .btn:hover {
+  background-color: #45a049;
+}
+
+/* Styles for sidebar links */
+.invoices-page .sidebar a {
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.invoices-page .sidebar a:hover {
+  background-color: #007bff;
+}
+
+/* Active link style */
+.invoices-page .sidebar a.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .invoices-page {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .content {
+    flex: 1;
+    padding: 10px;
+  }
+}
+
+.invoice-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
