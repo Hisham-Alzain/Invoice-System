@@ -3,10 +3,7 @@ import { Link } from 'react-router-dom';
 import './css/HomePage.css'; // Import the CSS file for the home page
 
 const Dashboard = () => {
-
   return (
-<html>
-<body>
     <div className="homepage">
       <div className="sidebar">
         <h2>Invoice System</h2>
@@ -15,7 +12,7 @@ const Dashboard = () => {
             <Link to="/invoices">View Invoices</Link>
           </li>
           <li>
-            <Link to="/create-invoice">Create New Invoice</Link>
+            <Link to="/invoices/create">Create New Invoice</Link>
           </li>
           <li>
             <Link to="/clients">Manage Clients</Link>
@@ -27,13 +24,9 @@ const Dashboard = () => {
       </div>
       <div className="content">
         <h1>Invoice System</h1>
-        <div className="cta-buttons">
-
-        </div>
+        <div className="cta-buttons"></div>
       </div>
     </div>
-    </body>
-    </html>
   );
 };
 

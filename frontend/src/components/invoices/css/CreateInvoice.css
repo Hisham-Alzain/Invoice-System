@@ -1,0 +1,150 @@
+.create-invoice {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .sidebar h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar li {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar a {
+    display: block;
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sidebar a:hover {
+    background-color: #007bff;
+  }
+  
+  /* Active link style */
+  .sidebar a.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .create-invoice {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+    }
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input[type="date"] {
+    height: 32px;
+  }
+  
+  input[type="number"] {
+    width: 150px;
+  }
+  
+  .radio-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .radio-label {
+    margin-right: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  button[type="submit"] {
+    margin-top: 20px;
+    background-color: #28a745;
+  }
+  
+  button[type="button"] {
+    background-color: #dc3545;
+  }
+  
+  button[type="button"]:hover,
+  button[type="submit"]:hover {
+    background-color: #0069d9;
+  }
+  
+  h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .item-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    text-emphasis-color: blue;
+  }
+  
+  .item-label {
+    margin-right: 10px;
+    font-weight: bold;
+    
+  }
+  
+  .item-actions {
+    margin-left: auto;
+  }
+  
+  .item-actions button {
+    margin-left: 10px;
+    background-color: #dc3545;
+  }

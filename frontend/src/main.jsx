@@ -7,7 +7,10 @@ import ForgetPassword from './components/forgetPassword';
 import ResetPassword from './components/resetPassword';
 import Dashboard from './components/Dashboard';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Invoices from './components/invoice.jsx';
+import Invoices from './components/invoices/invoice';
+import CreateInvoice from './components/invoices/create';
+import ItemList from './components/invoices/items';
+import ClientList from './components/invoices/clients';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -16,6 +19,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/" element={<App />} />
           <Route path="/main" element={<Dashboard />} />
           <Route path="/invoices" element={<Invoices />} />
+          <Route path="/items" element={<ItemList />} />
+          <Route path="/clients" element={<ClientList/>} />
+          <Route path="/invoices/create" element={<CreateInvoice/>} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="forgetPassword" element={<ForgetPassword />} />
