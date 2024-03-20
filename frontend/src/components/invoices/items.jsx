@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './css/item.css';
 
-const ItemList = () => {
+const ItemList = ({ handleItemChange }) => {
   const [selectedItem, setSelectedItem] = useState(null);
-  const [showDropdown, setShowDropdown] = useState(false);
   const [itemListData, setItemListData] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/items", {
@@ -26,7 +26,8 @@ const ItemList = () => {
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
-    setShowDropdown(!showDropdown);
+    setShowDropdown(false);
+    handleItemChange(item);
   };
 
   return (

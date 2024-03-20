@@ -15,52 +15,50 @@ const CreateInvoice = () => {
   const [total_amount, setTotalAmount] = useState('');
   const [client, setClient] = useState(null);
   const [invoiceItems, setInvoiceItems] = useState([]);
-  const [shouldSubmitForm, setShouldSubmitForm] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const handleSubmit = (e) => {
-    if (!shouldSubmitForm) {
-      // Check if the form submission should be prevented
-      e.preventDefault();
-      setShouldSubmitForm(true); // Reset the form submission flag
-      return;
-    }
-
-      // Perform API request to create the invoice using the invoiceData
-      const invoiceData = {
-        release_date,
-        billing_status: selectedBilling_status,
-        total_amount,
-        client,
-        invoice_items: invoiceItems,
-      };
-
-      console.log(client);
-      fetch('http://127.0.0.1:8000/api/invoices', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2',
-        },
-        body: JSON.stringify(invoiceData),
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const NewinvoiceItems = invoiceItems.map(item => ({
+      item_id: item.id,
+      qtn: item.qtn
+    }));
+    // Perform API request to create the invoice using the invoiceData
+    const data = {
+      client_id: client.id,
+      release_date: release_date,
+      billing_status: selectedBilling_status,
+      total_amount: total_amount,
+      invoice_items: NewinvoiceItems,
+    };
+    fetch('http://127.0.0.1:8000/api/invoices', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2',
+      },
+      body: JSON.stringify(
+        data
+      ),
+    })
+      .then((data) => {
+        return data.json();
       })
-        .then((data) => {
-          return data.json();
-        })
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .then((data) => {
+        console.log(data);
+        setSuccessMessage('Invoice created successfully!');
+      })
+      .catch((error) => {
+        console.log(error);
+        setSuccessMessage('An error occurred while creating the invoice. Please try again.');
+      });
+    // Reset the form fields and state after successful submission
+    setReleaseDate('');
+    setSelectedBilling_status('');
+    setTotalAmount('');
+    setClient(null);
+    setInvoiceItems([]);
 
-      // Reset the form fields and state after successful submission
-      setReleaseDate('');
-      setSelectedBilling_status('');
-      setTotalAmount('');
-      setClient(null);
-      setInvoiceItems([]);
-      setShowDropdown(false);
-    
   };
 
   const handleReleaseDateChange = (event) => {
@@ -72,7 +70,7 @@ const CreateInvoice = () => {
   };
 
   const handleClientChange = (selectedClient) => {
-    setShouldSubmitForm(false); // Set the flag to prevent form submission
+    console.log(selectedClient);
     setClient(selectedClient);
   };
 
@@ -81,14 +79,30 @@ const CreateInvoice = () => {
     setTotalAmount(event.target.value);
   };
 
-  const handleItemChange = (index, field, selectedItem) => {
+  const handleQuantityChange = (index, quantity) => {
     const updatedItems = [...invoiceItems];
-    updatedItems[index][field] = selectedItem;
+
+    if (!updatedItems[index]) {
+      updatedItems[index] = {}; // Initialize the item object if it doesn't exist
+    }
+
+    updatedItems[index].qtn = quantity; // Update the qtn property
+    setInvoiceItems(updatedItems);
+  };
+
+  const handleItemChange = (index, selectedItem) => {
+    const updatedItems = [...invoiceItems];
+    console.log(selectedItem);
+    if (!updatedItems[index]) {
+      updatedItems[index] = {}; // Initialize the item object if it doesn't exist
+    }
+
+    updatedItems[index] = selectedItem; // Update the item_id property
     setInvoiceItems(updatedItems);
   };
 
   const handleAddItem = () => {
-    setInvoiceItems([...invoiceItems, { item: null, quantity: '', price: '' }]);
+    setInvoiceItems([...invoiceItems, { item: null, qtn: 0, price: '' }]);
   };
 
   const handleRemoveItem = (index) => {
@@ -149,18 +163,15 @@ const CreateInvoice = () => {
             {invoiceItems.map((item, index) => (
               <div key={index}>
                 <label>
-                  Item ID:
-                  <ItemList
-                    selectedItem={item.item_id}
-                    onChange={(selectedItem) => handleItemChange(index, 'item_id', selectedItem)}
-                  />
+                  Item:
+                  <ItemList handleItemChange={(selectedItem) => handleItemChange(index, selectedItem)} />
                 </label>
                 <label>
                   Quantity:
                   <input
                     type="number"
                     value={item.qtn}
-                    onChange={(e) => handleItemChange(index, 'qtn', e.target.value)}
+                    onChange={(e) => handleQuantityChange(index, e.target.value)}
                   />
                 </label>
                 <button type="button" onClick={() => handleRemoveItem(index)}>
@@ -173,6 +184,7 @@ const CreateInvoice = () => {
             </button>
           </div>
           <button type="submit">Create Invoice</button>
+          {successMessage && <p className="success-message">{successMessage}</p>}
         </form>
       </div>
     </div>
