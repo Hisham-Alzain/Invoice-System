@@ -19,13 +19,14 @@ const ItemList = () => {
       .catch(error => console.log(error));
   }, []);
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = (event) => {
+    event.preventDefault();
     setShowDropdown(!showDropdown);
   };
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
-    setShowDropdown(false);
+    setShowDropdown(!showDropdown);
   };
 
   return (

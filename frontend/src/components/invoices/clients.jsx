@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './css/item.css';
 
-const ClientList = ({ handleClientChange, setShowDropdown }) => {
+const ClientList = ({ handleClientChange }) => {
   const [selectedClient, setSelectedClient] = useState(null);
   const [clientListData, setClientListData] = useState([]);
   const [showDropdown, setShowDropdownProp] = useState(false);
@@ -19,13 +19,14 @@ const ClientList = ({ handleClientChange, setShowDropdown }) => {
       .catch(error => console.log(error));
   }, []);
 
-  const handleDropdownToggle = () => {
-    setShowDropdown(!showDropdown);
+  const handleDropdownToggle = (event) => {
+    event.preventDefault();
+    setShowDropdownProp(!showDropdown);
   };
 
   const handleClientClick = (client) => {
     setSelectedClient(client);
-    setShowDropdown(false);
+    setShowDropdownProp(false);
     handleClientChange(client); // Call the handleClientChange prop function
   };
 

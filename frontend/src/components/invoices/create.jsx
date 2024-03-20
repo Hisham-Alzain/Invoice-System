@@ -14,8 +14,8 @@ const CreateInvoice = () => {
   const [selectedBilling_status, setSelectedBilling_status] = useState('');
   const [total_amount, setTotalAmount] = useState('');
   const [client, setClient] = useState(null);
-  const [showDropdown, setShowDropdown] = useState(false);
   const [invoiceItems, setInvoiceItems] = useState([]);
+  const [shouldSubmitForm, setShouldSubmitForm] = useState(false);
 
   const handleSubmit = (e) => {
     if (!shouldSubmitForm) {
@@ -121,7 +121,7 @@ const CreateInvoice = () => {
         <form onSubmit={handleSubmit}>
           <label>
             Client:
-            <ClientList handleClientChange={handleClientChange} setShowDropdown={setShowDropdown} />
+            <ClientList handleClientChange={handleClientChange} />
           </label>
           <label>
             Release Date:
