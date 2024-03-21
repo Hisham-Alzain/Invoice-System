@@ -25,6 +25,24 @@ const MangeClients = () => {
 
   // Render individual client view
   const renderClient = (client) => {
+    const handleDeleteClient = () => {
+        fetch(`http://127.0.0.1:8000/api/clients/${client.id}`, {
+          method: 'DELETE',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2"
+          },
+        })
+          .then(response => {
+            if (response.ok) {
+              // Remove the deleted client from the list
+              setClients(prevClients => prevClients.filter(c => c.id !== client.id));
+            } else {
+              throw new Error('Failed to delete client');
+            }
+          })
+          .catch(error => setError(error));
+      };
     return (
       <div key={client.id} className="client-container">
         <div className="left-part">
@@ -33,7 +51,7 @@ const MangeClients = () => {
           <p>Location: {client.location}</p>
         </div>
         <div className="right-part">
-          <Link to={`/clients/delete/${client.id}`}>Delete Client</Link>
+          <button onClick={handleDeleteClient}>Delete Client</button>
           <Link to={`/clients/update/${client.id}`}>Update Client</Link>
         </div>
         <hr />
