@@ -14,6 +14,7 @@ import ClientList from './components/invoices/clientList';
 import MangeClients from './components/mangeClients';
 import CreateClient from './components/clientsAdd';
 import UpdateClient from './components/updateClient';
+import InvoiceDetails from './components/invoices/InvoiceDetails';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/" element={<App />} />
           <Route path="/main" element={<Dashboard />} />
           <Route path="/invoices" element={<Invoices />} />
+          <Route path="/invoices/:id" element={<InvoiceDetails />} />
           <Route path="/items" element={<ItemList />} />
           <Route path="/clients" element={<MangeClients/>} />
           <Route path="/clients/add" element={<CreateClient/>} />

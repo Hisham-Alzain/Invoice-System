@@ -133,17 +133,18 @@ const CreateInvoice = () => {
       <div className="content">
         <h1>Create Invoice</h1>
         <form onSubmit={handleSubmit}>
-          <label>
-            Client:
+          <div className="form-group">
+            <label htmlFor="client">Client:</label>
             <ClientList handleClientChange={handleClientChange} />
-          </label>
-          <label>
-            Release Date:
-            <input type="date" name="release_date" value={release_date} onChange={handleReleaseDateChange} />
-          </label>
-          <div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="release_date">Release Date:</label>
+            <input type="date" id="release_date" value={release_date} onChange={handleReleaseDateChange} />
+          </div>
+          <div className="form-group">
+            <label>Billing Status:</label>
             {billing_states.map((billing_status) => (
-              <label key={billing_status.value}>
+              <label key={billing_status.value} className="radio-label">
                 <input
                   type="radio"
                   value={billing_status.value}
@@ -154,26 +155,26 @@ const CreateInvoice = () => {
               </label>
             ))}
           </div>
-          <label>
-            Total Amount:
-            <input type="number" name="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
-          </label>
-          <div>
+          <div className="form-group">
+            <label htmlFor="total_amount">Total Amount:</label>
+            <input type="number" id="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
+          </div>
+          <div className="form-group">
             <h2>Invoice Items</h2>
             {invoiceItems.map((item, index) => (
-              <div key={index}>
-                <label>
-                  Item:
+              <div key={index} className="item-container">
+                <div className="item-label">Item:</div>
+                <div className="item-select">
                   <ItemList handleItemChange={(selectedItem) => handleItemChange(index, selectedItem)} />
-                </label>
-                <label>
-                  Quantity:
+                </div>
+                <div className="item-label">Quantity:</div>
+                <div className="item-quantity">
                   <input
                     type="number"
                     value={item.qtn}
                     onChange={(e) => handleQuantityChange(index, e.target.value)}
                   />
-                </label>
+                </div>
                 <button type="button" onClick={() => handleRemoveItem(index)}>
                   Remove Item
                 </button>
@@ -183,7 +184,7 @@ const CreateInvoice = () => {
               Add Item
             </button>
           </div>
-          <button type="submit">Create Invoice</button>
+          <button type="submit" className="submit-button">Create Invoice</button>
           {successMessage && <p className="success-message">{successMessage}</p>}
         </form>
       </div>
