@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import ClientList from './clients';
+import ClientList from './clientList';
 import ItemList from './items';
 import './css/CreateInvoice.css';
 

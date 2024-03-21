@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\forgetPasswordRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Notifications\resetPassword;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use App\Http\Requests\forgetPasswordRequest;
 
 class ForgetPasswordController extends Controller
 {
@@ -26,6 +27,7 @@ class ForgetPasswordController extends Controller
     public function reset(forgetPasswordRequest $request){
         $validated=$request->validated();
         $user=User::where("email",$validated['email'])->first();
+        $validated['password']=Hash::make($validated['password']);
         $user->update($validated);
         return response()->json([
             "data" => $user,
