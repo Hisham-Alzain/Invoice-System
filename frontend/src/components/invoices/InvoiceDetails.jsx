@@ -32,8 +32,23 @@ const InvoiceDetails = () => {
     }, [id]);
 
     const handleDelete = () => {
-        // Add delete logic here
-    };
+        fetch(`http://127.0.0.1:8000/api/invoices/${id}`, {
+          method: 'DELETE',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2"
+          },
+        })
+          .then(response => {
+            if (response.ok) {
+              // Remove the deleted client from the list
+              window.location.href = '/invoices';
+            } else {
+              throw new Error('Failed to delete invoice');
+            }
+          })
+          .catch(error => setError(error));
+      };
 
     if (error) {
         return <div className="error">Error: {error}</div>;

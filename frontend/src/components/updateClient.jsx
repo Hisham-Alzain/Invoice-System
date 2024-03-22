@@ -93,7 +93,7 @@ const UpdateClient = () => {
           </label>
           <label>
             Name:
-            <input type="text" name="Name" value={name || ''} onChange={handleNameChange} />
+            <input type="text" name="Name" value={name } onChange={handleNameChange} />
           </label>
           <label>
             Location:
