@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import './css/Register.css';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [results, setResults] = useState([]);
@@ -7,7 +9,7 @@ const Register = () => {
     { value: 'user', label: 'User' },
     { value: 'admin', label: 'Admin' },
   ];
-
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,22 +52,31 @@ const Register = () => {
                 "type":selectedType
             })
         })
-        .then(data => {
-        return data.json();
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.status);
+          }
+          else {
+            return response.json();
+          }
         })
-        .then(data => {
-        console.log(data);
+        .then((data) => {
+          // Do somthing with the token return from Server data['token'] 
+          console.log(data)
+          // Reset the form fields
+          setEmail('');
+          setPassword('');
+          setConfirmPassword('');
+          setName('');
+          setSelectedType('')
+          // Redirect to dashboard
+          navigate('/main');
         })
-        .catch(err => {
-        console.log(err);
+        .catch(error => {
+          // Handle errors
+          console.log(error);
         });
-        window.location.href = '/main';
-    // Reset the form fields
-    setName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-    setSelectedType('');
+  
   };
 
   return (
