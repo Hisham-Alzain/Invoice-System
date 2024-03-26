@@ -39,51 +39,66 @@ const Invoices = () => {
     return <div>Error: {error}</div>;
   }
 
-  // Render individual invoice view
   const renderInvoice = (invoice) => {
     return (
-      <div key={invoice.id} className="invoice-container">
-        <div className="left-part">
-          <h2>Invoice ID: {invoice.id}</h2>
-          <p>Invoice Date: {invoice.release_date}</p>
-          <p>Client: {invoice.client.name}</p>
-          <p>Total Amount: {invoice.total_amount}</p>
-          
-        </div>
-        <div className="right-part">
+      <tr key={invoice.id}>
+        <td>{invoice.id}</td>
+        <td>{invoice.release_date}</td>
+        <td>{invoice.client.name}</td>
+        <td>{invoice.total_amount}</td>
+        <td>
           <Link to={`/invoices/${invoice.id}`}>View Details</Link>
-        </div>
-        <hr />
-      </div>
+        </td>
+      </tr>
     );
   };
-
+  
   return (
     <div className="invoices-page">
-      <div className="sidebar">
-        <h2>Invoice System</h2>
-        <ul>
-          <li>
-            <Link to="/invoices">View Invoices</Link>
-          </li>
-          <li>
-            <Link to="/invoices/create">Create New Invoice</Link>
-          </li>
-          <li>
-            <Link to="/clients">Manage Clients</Link>
-          </li>
-          <li>
-            <Link to="/reports">Generate Reports</Link>
-          </li>
-        </ul>
+      <div className="TopBar">
+        <header>
+          <h1>Invoice System</h1>
+          <nav>
+            <label htmlFor="menu-toggle" className="menu-btn">
+              <span className="menu-icon"></span>
+            </label>
+            <ul className="menu">
+              <li>
+                <Link to="/invoices">View Invoices</Link>
+              </li>
+              <li>
+                <Link to="/invoices/create">Create New Invoice</Link>
+              </li>
+              <li>
+                <Link to="/clients">Manage Clients</Link>
+              </li>
+              <li>
+                <Link to="/reports">Generate Reports</Link>
+              </li>
+            </ul>
+          </nav>
+        </header>
       </div>
       <div className="content">
         <h1>View Invoices</h1>
-        {invoices.map(renderInvoice)}
+        <table className="invoices-table">
+          <thead>
+            <tr>
+              <th>Invoice ID</th>
+              <th>Invoice Date</th>
+              <th>Client</th>
+              <th>Total Amount</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {invoices.map(renderInvoice)}
+          </tbody>
+        </table>
         <div className="cta-buttons"></div>
       </div>
     </div>
   );
-};
+}
 
 export default Invoices;
