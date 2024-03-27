@@ -16,6 +16,7 @@ import CreateClient from './components/clientsAdd';
 import UpdateClient from './components/updateClient';
 import InvoiceDetails from './components/invoices/InvoiceDetails';
 import UpdateInvoice from './components/invoices/updateInvoice';
+import TopBar from './components/TopBar.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="register" element={<Register />} />
           <Route path="forgetPassword" element={<ForgetPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/topbar" element={<TopBar />} />
         </Routes>
       </BrowserRouter>,
   </React.StrictMode>,

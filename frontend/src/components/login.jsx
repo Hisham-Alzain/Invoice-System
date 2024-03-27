@@ -7,6 +7,7 @@ const Login = () => {
   const [Email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  const [failMessage, setFailMessage] = useState('');
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -53,6 +54,7 @@ const Login = () => {
       })
       .catch(error => {
         // Handle errors
+        setFailMessage("Invalid email or password");
         console.log(error);
       });
 
@@ -86,6 +88,8 @@ const Login = () => {
       <button type="button" onClick={handleForgotPasswordSubmit}>
         Forgot Password?
       </button>
+      <div color='red'>{failMessage}</div>
+      
     </form>
   );
 };

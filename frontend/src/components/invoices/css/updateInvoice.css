@@ -3,44 +3,83 @@
     font-family: Arial, sans-serif;
   }
   
-  .sidebar {
-    width: 200px;
-    background-color: #011121;
-    color: #fff;
-    padding: 20px;
-  }
   
-  .sidebar h2 {
-    margin-bottom: 20px;
-    font-size: 22px;
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar li {
-    margin-bottom: 10px;
-  }
-  
-  .sidebar a {
-    display: block;
-    padding: 10px;
-    color: #fff;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-  }
-  
-  .sidebar a:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Active link style */
-  .sidebar a.active {
-    background-color: #0056b3;
-  }
+.TopBar {
+  background-color: #34020c;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+}
+
+.TopBar h1 {
+  font-size: 24px;
+}
+
+nav {
+  position: relative;
+}
+
+.menu-btn {
+  display: none;
+  cursor: pointer;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.menu-icon {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: #fff;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.menu-icon:before,
+.menu-icon:after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background-color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.menu-icon:before {
+  top: -6px;
+}
+
+.menu-icon:after {
+  top: 6px;
+}
+
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.menu li {
+  margin-left: 10px;
+}
+
+.menu a {
+  display: block;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.menu a:hover {
+  color: #007bff;
+}
   
   @media screen and (max-width: 768px) {
     .update-invoice {

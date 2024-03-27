@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './css/Invoices.css'; // Import the CSS file for the invoices page
+import TopBar from '../TopBar';
 
 
 const Invoices = () => {
@@ -55,30 +56,7 @@ const Invoices = () => {
   
   return (
     <div className="invoices-page">
-      <div className="TopBar">
-        <header>
-          <h1>Invoice System</h1>
-          <nav>
-            <label htmlFor="menu-toggle" className="menu-btn">
-              <span className="menu-icon"></span>
-            </label>
-            <ul className="menu">
-              <li>
-                <Link to="/invoices">View Invoices</Link>
-              </li>
-              <li>
-                <Link to="/invoices/create">Create New Invoice</Link>
-              </li>
-              <li>
-                <Link to="/clients">Manage Clients</Link>
-              </li>
-              <li>
-                <Link to="/reports">Generate Reports</Link>
-              </li>
-            </ul>
-          </nav>
-        </header>
-      </div>
+      <TopBar/>
       <div className="content">
         <h1>View Invoices</h1>
         <table className="invoices-table">

@@ -13,7 +13,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 100px;
 }
 
 .invoice-id {
@@ -23,6 +23,7 @@
 
 .action-button {
   padding: 10px 20px;
+  margin-left: 1050px;
   background-color: #007bff;
   color: #fff;
   text-decoration: none;
@@ -132,80 +133,4 @@
   .action-link {
     margin-top: 10px;
   }
-}
-.TopBar {
-  background-color: #34020c;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-}
-
-.TopBar h1 {
-  font-size: 24px;
-}
-
-.TopBar nav {
-  position: relative;
-}
-
-.TopBar .menu-btn {
-  display: none;
-  cursor: pointer;
-  padding: 10px;
-  background-color: transparent;
-  border: none;
-  transition: transform 0.3s ease;
-}
-
-.TopBar .menu-icon {
-  display: block;
-  width: 20px;
-  height: 2px;
-  background-color: #fff;
-  position: relative;
-  transition: background-color 0.3s ease;
-}
-
-.TopBar .menu-icon:before,
-.TopBar .menu-icon:after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 2px;
-  background-color: #fff;
-  transition: transform 0.3s ease;
-}
-
-.TopBar .menu-icon:before {
-  top: -6px;
-}
-
-.TopBar .menu-icon:after {
-  top: 6px;
-}
-
-.TopBar .menu {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-.TopBar .menu li {
-  margin-left: 10px;
-}
-
-.TopBar .menu a {
-  display: block;
-  padding: 10px;
-  color: #fff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.TopBar .menu a:hover {
-  color: #007bff;
 }

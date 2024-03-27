@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import "./css/invoiceDetails.css";
+import TopBar from '../TopBar.jsx';
 
 const InvoiceDetails = () => {
   const { id } = useParams();
@@ -60,36 +61,14 @@ const InvoiceDetails = () => {
 
   return (
     <div className="invoice-details">
-         <div className="TopBar">
-        <header>
-          <h1>Invoice System</h1>
-          <nav>
-            <label htmlFor="menu-toggle" className="menu-btn">
-              <span className="menu-icon"></span>
-            </label>
-            <ul className="menu">
-              <li>
-                <Link to="/invoices">View Invoices</Link>
-              </li>
-              <li>
-                <Link to="/invoices/create">Create New Invoice</Link>
-              </li>
-              <li>
-                <Link to="/clients">Manage Clients</Link>
-              </li>
-              <li>
-                <Link to="/reports">Generate Reports</Link>
-              </li>
-            </ul>
-          </nav>
-        </header>
-      </div>
+         
       <div className="header">
-        <h2 className="invoice-id">Invoice ID: {invoice.id}</h2>
-        <Link to={`/invoices/${id}/update`} className="action-button">Edit</Link>
+        <TopBar />
       </div>
 
       <div className="invoice-info">
+      <h2 className="invoice-id">Invoice ID: {invoice.id}</h2>
+        <Link to={`/invoices/${id}/update`} className="action-button">Edit</Link>
         <table className="info-table">
           <tbody>
             <tr>
