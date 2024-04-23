@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext,useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from './css/login.module.css';
+import { LoginContext } from '../App';
 
 const Login = () => {
+    // Context
+  const { loggedIn, setLoggedIn, accessToken, setAccessToken } = useContext(LoginContext);
+    // Define states
+  const initialized = useRef(false);
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const [Email, setEmail] = useState('');
@@ -21,8 +26,10 @@ const Login = () => {
   };
   
   const handleSubmit = (event) => {
+    
     event.preventDefault();
-
+    if (!initialized.current) {
+      initialized.current = true;
     // Perform Login logic (Call api)
     fetch("http://127.0.0.1:8000/api/login", {
       method: 'POST',
@@ -50,14 +57,17 @@ const Login = () => {
         // Reset the form fields
         setEmail('');
         setPassword('');
+        setLoggedIn(true);
         // Redirect to dashboard
-        navigate('/main');
+        navigate('/');
+        
       })
       .catch(error => {
         // Handle errors
         setFailMessage("Invalid email or password");
         console.log(error);
       });
+    }
   };
 
   const handleRegisterClick = () => {
