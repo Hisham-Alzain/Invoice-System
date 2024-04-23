@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './css/Invoices.css'; // Import the CSS file for the invoices page
 import TopBar from '../TopBar';
-
+//import 'bootstrap/dist/css/bootstrap.css';
 
 const Invoices = () => {
   const [invoices, setInvoices] = useState([]);

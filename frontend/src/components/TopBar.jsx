@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import './css/TopBsr.css';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+//import './css/TopBsr.css';
+import { Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.css";
 
 const TopBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,30 +11,85 @@ const TopBar = () => {
   };
 
   return (
-    <div className={`TopBar ${menuOpen ? 'menu-open' : ''}`}>
-      <header>
-        <h1>Invoice System</h1>
-        <nav>
-          <label htmlFor="menu-toggle" className="menu-btn" onClick={toggleMenu}>
-            <span className="menu-icon"></span>
-          </label>
-          <ul className={`menu ${menuOpen ? 'open' : ''}`}>
-            <li>
-              <Link to="/invoices">View Invoices</Link>
-            </li>
-            <li>
-              <Link to="/invoices/create">Create New Invoice</Link>
-            </li>
-            <li>
-              <Link to="/clients">Manage Clients</Link>
-            </li>
-            <li>
-              <Link to="/reports">Generate Reports</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-    </div>
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">
+            Navbar
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="#">
+                  Home
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Link
+                </a>
+              </li>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Dropdown
+                </a>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Action
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Another action
+                    </a>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Something else here
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link disabled" aria-disabled="true">
+                  Disabled
+                </a>
+              </li>
+            </ul>
+            <form className="d-flex" role="search">
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
   );
 };
 

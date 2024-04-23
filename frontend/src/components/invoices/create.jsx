@@ -4,6 +4,7 @@ import ClientList from './clientList';
 import ItemList from './items';
 import './css/CreateInvoice.css';
 import TopBar from '../TopBar';
+//import 'bootstrap/dist/css/bootstrap.css';
 
 const CreateInvoice = () => {
   const billing_states = [
@@ -93,12 +94,12 @@ const CreateInvoice = () => {
 
   const handleItemChange = (index, selectedItem) => {
     const updatedItems = [...invoiceItems];
-    console.log(selectedItem);
+  
     if (!updatedItems[index]) {
       updatedItems[index] = {}; // Initialize the item object if it doesn't exist
     }
-
-    updatedItems[index] = selectedItem; // Update the item_id property
+  
+    updatedItems[index].item = selectedItem; // Update the item property
     setInvoiceItems(updatedItems);
   };
 
@@ -116,38 +117,45 @@ const CreateInvoice = () => {
   };
 
   return (
-
     <div className="content">
       <TopBar />
-      <h1>Create Invoice</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="client">Client:</label>
-          <ClientList handleClientChange={handleClientChange} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="release_date">Release Date:</label>
-          <input type="date" id="release_date" value={release_date} onChange={handleReleaseDateChange} />
-        </div>
-        <div className="form-group">
-          <label>Billing Status:</label>
-          {billing_states.map((billing_status) => (
-            <label key={billing_status.value} className="radio-label">
-              <input
-                type="radio"
-                value={billing_status.value}
-                checked={selectedBilling_status === billing_status.value}
-                onChange={handleBillingStatusChange}
-              />
-              {billing_status.label}
-            </label>
-          ))}
-        </div>
-        <div className="form-group">
-          <label htmlFor="total_amount">Total Amount:</label>
-          <input type="number" id="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
-        </div>
-        <div className="left-side">
+      <div className="left-section">
+        <h1>Create Invoice</h1>
+        <form onSubmit={handleSubmit}>
+          {/* Data insertion section */}
+          <div className="form-group">
+            <label htmlFor="client">Client:</label>
+            <ClientList handleClientChange={handleClientChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="release_date">Release Date:</label>
+            <input type="date" id="release_date" value={release_date} onChange={handleReleaseDateChange} />
+          </div>
+          <div className="form-group">
+            <label>Billing Status:</label>
+            {billing_states.map((billing_status) => (
+              <label key={billing_status.value} className="radio-label">
+                <input
+                  type="radio"
+                  value={billing_status.value}
+                  checked={selectedBilling_status === billing_status.value}
+                  onChange={handleBillingStatusChange}
+                />
+                {billing_status.label}
+              </label>
+            ))}
+          </div>
+          <div className="form-group">
+            <label htmlFor="total_amount">Total Amount:</label>
+            <input type="number" id="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
+          </div>
+          <button type="submit" className="submit-button">Create Invoice</button>
+          {successMessage && <p className="success-message">{successMessage}</p>}
+        </form>
+      </div>
+      <div className="right-section">
+        {/* Invoice item insertion section */}
+        <div className="invoice-items">
           <h2>Invoice Items:</h2>
           <table>
             <thead>
@@ -163,24 +171,13 @@ const CreateInvoice = () => {
               {invoiceItems.map((item, index) => (
                 <tr key={index}>
                   <td>
-                    <input
-                      type="text"
-                      value={item.item}
-                      onChange={(e) => handleItemChange(index, e.target.value)}
-                    />
+                  <ItemList className='itemList' handleItemChange={handleItemChange} />
                   </td>
                   <td>
                     <input
                       type="number"
                       value={item.qtn}
                       onChange={(e) => handleQuantityChange(index, e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={item.price}
-                      onChange={(e) => handlePriceChange(index, e.target.value)}
                     />
                   </td>
                   <td>{item.total}</td>
@@ -193,9 +190,7 @@ const CreateInvoice = () => {
           </table>
           <button onClick={handleAddItem}>Add Item</button>
         </div>
-        <button type="submit" className="submit-button">Create Invoice</button>
-        {successMessage && <p className="success-message">{successMessage}</p>}
-      </form>
+      </div>
     </div>
   );
 };
