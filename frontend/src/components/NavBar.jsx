@@ -55,16 +55,16 @@ const NavBar = () => {
         <ul className={styles.nav_links}>
           <div className={styles.nav_links_left}>
             <li>
-              <a href="#"> Home </a>
+              <a href="/"> Home </a>
             </li>
             <li>
-              <a href="#"> Invoices </a>
+              <a href="/invoices"> Invoices </a>
             </li>
             <li>
-              <a href="#"> Clients </a>
+              <a href="/clients"> Clients </a>
             </li>
             <li>
-              <a href="#"> Reports </a>
+              <a href="/reports"> Reports </a>
             </li>
           </div>
 
