@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import styles from './css/login.module.css';
 
 const Login = () => {
-  const [results, setResults] = useState([])
+  const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const [Email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
   const [failMessage, setFailMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -29,23 +32,21 @@ const Login = () => {
         'connection': 'keep-alive',
         'Accept-Encoding': 'gzip, deflate, br'
       },
-      body: JSON.stringify(
-        {
-          "email": Email,
-          "password": password
-        })
+      body: JSON.stringify({
+        "email": Email,
+        "password": password
+      })
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
-        }
-        else {
+        } else {
           return response.json();
         }
       })
       .then((data) => {
-        // Do somthing with the token return from Server data['token'] 
-        console.log(data)
+        // Do something with the token returned from Server data['token'] 
+        console.log(data);
         // Reset the form fields
         setEmail('');
         setPassword('');
@@ -57,15 +58,22 @@ const Login = () => {
         setFailMessage("Invalid email or password");
         console.log(error);
       });
-
-
   };
+
+  const handleRegisterClick = () => {
+    // Redirect to the registration page
+    navigate('/register');
+  };
+
   const handleForgotPasswordSubmit = (event) => {
     window.location.href = '/forgetPassword';
   };
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.loginForm}>
       <div>
         <label htmlFor="Email">Email:</label>
         <input
@@ -75,21 +83,32 @@ const Login = () => {
           onChange={handleEmailChange}
         />
       </div>
-      <div>
+      <div className={styles.passwordContainer}>
         <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
+        <div className={styles.passwordInput}>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            id="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <button
+            type="button"
+            onClick={handleTogglePassword}
+            className={styles.togglePasswordButton}
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
       </div>
-      <button type="submit">Login</button>
-      <button type="button" onClick={handleForgotPasswordSubmit}>
+      <button type="submit" className={styles.loginButton}>Login</button>
+      <button type="button" onClick={handleForgotPasswordSubmit} className={styles.forgotPasswordButton}>
         Forgot Password?
       </button>
-      <div color='red'>{failMessage}</div>
-      
+      <div className={styles.registerLink}>
+        Don't have an account? <Link to="/register">Register</Link>
+      </div>
+      <div className={styles.failMessage}>{failMessage}</div>      
     </form>
   );
 };
