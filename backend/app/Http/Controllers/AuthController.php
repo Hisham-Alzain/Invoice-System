@@ -53,4 +53,10 @@ class AuthController extends Controller
             "user"=>$user
         ]);
     }
+    public function IsExpired(Request $request)
+    {
+        return response()->json([
+            'message' => 'Token is valid'
+        ], 201);
+    }
 }

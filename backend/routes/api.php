@@ -34,5 +34,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('invoices',InvoiceController::class);
     Route::apiResource('clients',ClientController::class);
     Route::get('/userData',[AuthController::class,'userData']);
+    
 });
+Route::get('/isExpired',[AuthController::class,'IsExpired'])->middleware("auth:api");
 

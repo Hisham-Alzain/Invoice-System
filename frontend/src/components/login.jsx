@@ -57,7 +57,7 @@ const Login = () => {
         console.log(data);
         const token = data.access_token;
         setAccessToken(token);
-        Cookies.set('access_token', token);
+        Cookies.set('access_token', token,{ secure: true, expires: 365 });
         // Reset the form fields
         setEmail('');
         setPassword('');

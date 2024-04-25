@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, createContext } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { CheckToken } from './apis/api.jsx';
 import Dashboard from "./components/Dashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
 import Invoices from "./components/invoices/invoice";
@@ -22,53 +23,34 @@ import "./App.css";
 export const LoginContext = createContext({});
 
 function App() {
+  const initialized = useRef(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    const initializeApp = async () => {
-      try {
-        const cookieToken = Cookies.get('access_token');
-        if (cookieToken) {
-          const response = await checkToken(cookieToken);
-          if (response.status === 200) {
-            setLoggedIn(true);
-            setAccessToken(cookieToken);
-          } else {
-            handleUnauthorized();
-          }
+  if (!initialized.current) {
+    initialized.current = true;
+    // Get user token from cookie (if there is any)
+    const cookieToken = Cookies.get('access_token');
+    // Check user token
+    if (typeof cookieToken !== 'undefined') {
+      CheckToken(cookieToken).then((response) => {
+        if (response.status === 201) {
+          setLoggedIn(true);
+          setAccessToken(cookieToken);
         }
-      } catch (error) {
-        console.error("Error initializing app:", error);
-      } finally {
+        else {
+          Cookies.remove('access_token');
+          console.log(response.statusText);
+        }
         setLoading(false);
-      }
-    };
-
-    initializeApp();
-  }, []);
-
-  const checkToken = async (token) => {
-    // Mock API call to validate token
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (token === "valid_token") {
-          resolve({ status: 200 });
-        } else {
-          resolve({ status: 401, statusText: "Unauthorized" });
-        }
-      }, 1000);
-    });
-  };
-
-  const handleUnauthorized = () => {
-    // Handle unauthorized access (e.g., clear cookies, redirect to login)
-    Cookies.remove('access_token');
-    setLoggedIn(false);
-    setAccessToken(null);
-    console.log("Unauthorized access. Redirecting to login...");
-  };
+      });
+    }
+    else {
+      setLoading(false);
+    }
+  }
+}, []);
 
   if (loading) {
     return <div>Loading...</div>;

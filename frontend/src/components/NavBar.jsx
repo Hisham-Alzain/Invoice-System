@@ -1,8 +1,5 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import {
-  BriefcaseFill,
-  EnvelopeAtFill,
-  BellFill,
   List,
   X,
 } from "react-bootstrap-icons";
@@ -128,7 +125,7 @@ const NavUser = ({ userData }) => {
         className={styles.profile_image}
       ></img>
       <div className={styles.profile_details}>
-        <div>{userData.fullName}</div>
+        <div>{userData.name}</div>
       </div>
     </div>
   );
