@@ -1,11 +1,10 @@
-/* invoices.css */
-
 .invoices-page {
   background-color: #f2f2f2;
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-left: 0;
 }
 
 .TopBar {
@@ -15,7 +14,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding: 10px 20px;
 }
 
 .TopBar h1 {
@@ -74,7 +72,8 @@ nav {
 }
 
 .menu a {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 10px;
   color: #fff;
   text-decoration: none;
@@ -129,7 +128,8 @@ nav {
 }
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -140,6 +140,47 @@ nav {
 
 .btn:hover {
   background-color: #0056b3;
+}
+
+.btn .icon {
+  margin-right: 5px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.actions a,
+.actions button {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: transparent;
+  color: #007bff;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.actions a:hover,
+.actions button:hover {
+  background-color: #f2f2f2;
+  color: #0056b3;
+}
+
+.btn-primary,
+.btn-warning,
+.btn-danger {
+  margin-left: 2%; /* Added padding */
+}
+
+.delete-icon,
+.edit-icon {
+  width: 16px;
+  height: 16px;
 }
 
 /* Responsive Styles */
@@ -171,40 +212,6 @@ nav {
   }
 
   .menu a {
-    padding: 5px;
-    color: #333;
-  }
-
-  .menu-btn:checked ~ .menu {
-    display: block;
-  }
-
-  .menu-icon {
-    background-color: transparent;
-  }
-
-  .menu-icon:before,
-  .menu-icon:after {
-    background-color: #333;
-  }
-
-  .menu-btn:checked ~ .menu .menu-icon {
-    background-color: #333;
-  }
-
-  .menu-btn:checked ~ .menu .menu-icon:before {
-    transform: rotate(-45deg);
-  }
-
-  .menu-btn:checked ~ .menu .menu-icon:after {
-    transform: rotate(45deg);
-  }
-
-  .content .container {
-    padding: 10px;
-  }
-
-  .content h1 {
-    font-size: 20px;
+    padding: 5px 10px;
   }
 }

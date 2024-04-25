@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './css/Invoices.css'; // Import the CSS file for the invoices page
-import TopBar from '../TopBar';
-//import 'bootstrap/dist/css/bootstrap.css';
+import NavBar from '../NavBar';
+import { BsTrash, BsPencil, BsEye } from 'react-icons/bs'; // Import the Bootstrap icons
 
 const Invoices = () => {
   const [invoices, setInvoices] = useState([]);
@@ -41,6 +41,16 @@ const Invoices = () => {
   }
 
   const renderInvoice = (invoice) => {
+    const handleEdit = () => {
+      // Handle edit logic for the invoice
+      console.log(`Edit invoice with ID: ${invoice.id}`);
+    };
+  
+    const handleDelete = () => {
+      // Handle delete logic for the invoice
+      console.log(`Delete invoice with ID: ${invoice.id}`);
+    };
+  
     return (
       <tr key={invoice.id}>
         <td>{invoice.id}</td>
@@ -48,7 +58,21 @@ const Invoices = () => {
         <td>{invoice.client.name}</td>
         <td>{invoice.total_amount}</td>
         <td>
-          <Link to={`/invoices/${invoice.id}`}>View Details</Link>
+          <Link to={`/invoices/${invoice.id}`} className="btn btn-primary btn-sm">
+            <BsEye /> View Details
+          </Link>
+          <button
+            onClick={() => handleEdit(invoice.id)}
+            className="btn btn-warning btn-sm"
+          >
+            <BsPencil /> Edit
+          </button>
+          <button
+            onClick={() => handleDelete(invoice.id)}
+            className="btn btn-danger btn-sm"
+          >
+            <BsTrash /> Delete
+          </button>
         </td>
       </tr>
     );
@@ -56,9 +80,12 @@ const Invoices = () => {
   
   return (
     <div className="invoices-page">
-      <TopBar/>
+      <NavBar/>
       <div className="content">
-        <h1>View Invoices</h1>
+        <div className="top-bar">
+          <h1>View Invoices</h1>
+          <Link to="/invoices/create" className="btn btn-primary">Create</Link>
+        </div>
         <table className="invoices-table">
           <thead>
             <tr>
