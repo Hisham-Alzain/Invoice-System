@@ -2,9 +2,9 @@ import React from 'react';
 import axios from 'axios';
 
 
-export const FetchUserProfile = async (token) => {
+export const FetchUserData = async (token) => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/profile', {
+    const response = await axios.get('http://127.0.0.1:8000/api/userData', {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': "application/json",

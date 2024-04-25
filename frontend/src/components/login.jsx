@@ -2,6 +2,7 @@ import React, { useEffect, useState,useContext,useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from './css/login.module.css';
 import { LoginContext } from '../App';
+import Cookies from 'js-cookie';
 
 const Login = () => {
     // Context
@@ -54,6 +55,9 @@ const Login = () => {
       .then((data) => {
         // Do something with the token returned from Server data['token'] 
         console.log(data);
+        const token = data.access_token;
+        setAccessToken(token);
+        Cookies.set('access_token', token);
         // Reset the form fields
         setEmail('');
         setPassword('');

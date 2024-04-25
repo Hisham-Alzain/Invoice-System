@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap-icons";
 import { LoginContext } from "../App.jsx";
 import styles from "./css/NavBar.module.css";
+import { FetchUserData } from "../apis/api.jsx";
 
 const NavBar = () => {
   const { loggedIn, setLoggedIn, accessToken, setAccessToken } =
@@ -19,9 +20,9 @@ const NavBar = () => {
     if (!initialized.current) {
       initialized.current = true;
       console.log(loggedIn);
-      /*
+
       if (loggedIn) {
-        FetchUserProfile(accessToken).then((response) => {
+        FetchUserData(accessToken).then((response) => {
           if (response.status === 200) {
             setUser(response.data.user);
           }
@@ -30,7 +31,6 @@ const NavBar = () => {
           }
         });
       }
-      */
     }
   }, [loggedIn]);
   return (

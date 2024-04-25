@@ -33,5 +33,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('items',ItemController::class);
     Route::apiResource('invoices',InvoiceController::class);
     Route::apiResource('clients',ClientController::class);
+    Route::get('/userData',[AuthController::class,'userData']);
 });
 

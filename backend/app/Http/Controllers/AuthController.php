@@ -47,4 +47,10 @@ class AuthController extends Controller
             "token_type" => "bearer"
         ]);
     }
+    public function userData(){
+        $user=auth()->user();
+        return response()->json([
+            "user"=>$user
+        ]);
+    }
 }
