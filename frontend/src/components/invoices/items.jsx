@@ -1,23 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext, useState, useRef } from "react";
+import { LoginContext } from "../../App";
+import { FetchItems } from "../../apis/api";
 import './css/item.css';
 
 const ItemList = ({ handleItemChange }) => {
-  const [selectedItem, setSelectedItem] = useState(null);
+  const { loggedIn, setLoggedIn, accessToken, setAccessToken } =
+    useContext(LoginContext);
+  const initialized = useRef(false);
+  const [selectedItem, setSelectedItem] = useState('');
   const [itemListData, setItemListData] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/items", {
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2"
-      },
-    })
-      .then(response => response.json())
-      .then(data => setItemListData(data.data))
-      .catch(error => console.log(error));
-  }, []);
+    if (loggedIn && !initialized.current) {
+      initialized.current = true;
+      FetchItems(accessToken)
+        .then((response) => response)
+        .then((data) => {
+          if (Array.isArray(data.data.data)) {
+            setItemListData(data.data.data);
+          } else {
+            throw new Error("Invalid invoice data");
+          }
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [loggedIn, accessToken]);
 
   const handleDropdownToggle = (event) => {
     event.preventDefault();
@@ -31,23 +39,16 @@ const ItemList = ({ handleItemChange }) => {
   };
 
   return (
-    <div className="dropdown-container">
-      <button className="dropdown-toggle" onClick={handleDropdownToggle}>
-        {selectedItem ? selectedItem.name : 'Select an item'}
-      </button>
-      {showDropdown && (
-        <ul className="dropdown-menu">
-          {itemListData.map((item) => (
-            <li
-              key={item.id}
-              onClick={() => handleItemClick(item)}
-              className={selectedItem === item ? 'selected' : ''}
-            >
-              {item.name}
-            </li>
-          ))}
-        </ul>
-      )}
+    <div>
+      <label htmlFor="dropdown">Select an option:</label>
+      <select id="dropdown" value={selectedItem.id} onChange={handleItemClick}>
+        <option value="">-- Please choose an option --</option>
+        {itemListData.map((item) => (
+          <option key={item.id} value={item.id}>
+            {item.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };

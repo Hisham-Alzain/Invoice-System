@@ -16,7 +16,6 @@ const NavBar = () => {
   useEffect(() => {
     if (!initialized.current) {
       initialized.current = true;
-      console.log(loggedIn);
 
       if (loggedIn) {
         FetchUserData(accessToken).then((response) => {
