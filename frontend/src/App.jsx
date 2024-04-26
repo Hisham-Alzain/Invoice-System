@@ -19,6 +19,7 @@ import UpdateClient from "./components/updateClient";
 import AnonymousRoutes from "./components/AnonymousRoutes";
 import NavBar from "./components/NavBar";
 import "./App.css";
+import ClientList from "./components/invoices/clientList.jsx";
 
 export const LoginContext = createContext({});
 
@@ -67,6 +68,7 @@ function App() {
             <Route path="/invoices/:id" element={<InvoiceDetails />} />
             <Route path="/invoices/:id/update" element={<UpdateInvoice />} />
             <Route path="/items" element={<ItemList />} />
+            <Route path="/clientss" element={<ClientList />} />
             <Route path="/clients" element={<MangeClients />} />
             <Route path="/clients/add" element={<CreateClient />} />
             <Route path="/clients/update/:id" element={<UpdateClient />} />

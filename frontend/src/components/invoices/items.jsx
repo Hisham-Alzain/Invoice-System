@@ -40,7 +40,7 @@ const ItemList = ({ handleItemChange }) => {
 
   return (
     <div>
-      <label htmlFor="dropdown">Select an option:</label>
+      <label htmlFor="dropdown"></label>
       <select id="dropdown" value={selectedItem.id} onChange={handleItemClick}>
         <option value="">-- Please choose an option --</option>
         {itemListData.map((item) => (
