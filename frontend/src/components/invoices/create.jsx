@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import ClientList from './clientList';
 import ItemList from './items';
 import './css/CreateInvoice.css';
-import TopBar from '../TopBar';
+import NavBar from '../NavBar';
 //import 'bootstrap/dist/css/bootstrap.css';
 
 const CreateInvoice = () => {
@@ -117,81 +117,83 @@ const CreateInvoice = () => {
   };
 
   return (
+    <div className='createInvoice'>
+      <nav>
+      <NavBar />
+    </nav>
     <div className="content">
-      <TopBar />
-      <div className="left-section">
-        <h1>Create Invoice</h1>
-        <form onSubmit={handleSubmit}>
-          {/* Data insertion section */}
-          <div className="form-group">
-            <label htmlFor="client">Client:</label>
-            <ClientList handleClientChange={handleClientChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="release_date">Release Date:</label>
-            <input type="date" id="release_date" value={release_date} onChange={handleReleaseDateChange} />
-          </div>
-          <div className="form-group">
-            <label>Billing Status:</label>
-            {billing_states.map((billing_status) => (
-              <label key={billing_status.value} className="radio-label">
-                <input
-                  type="radio"
-                  value={billing_status.value}
-                  checked={selectedBilling_status === billing_status.value}
-                  onChange={handleBillingStatusChange}
-                />
-                {billing_status.label}
-              </label>
-            ))}
-          </div>
-          <div className="form-group">
-            <label htmlFor="total_amount">Total Amount:</label>
-            <input type="number" id="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
-          </div>
-          <button type="submit" className="submit-button">Create Invoice</button>
-          {successMessage && <p className="success-message">{successMessage}</p>}
-        </form>
-      </div>
-      <div className="right-section">
-        {/* Invoice item insertion section */}
-        <div className="invoice-items">
-          <h2>Invoice Items:</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoiceItems.map((item, index) => (
-                <tr key={index}>
-                  <td>
-                  <ItemList className='itemList' handleItemChange={handleItemChange} />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      value={item.qtn}
-                      onChange={(e) => handleQuantityChange(index, e.target.value)}
-                    />
-                  </td>
-                  <td>{item.total}</td>
-                  <td>
-                    <button onClick={() => handleRemoveItem(index)}>Remove</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <button onClick={handleAddItem}>Add Item</button>
+    
+    <div className="left-section">
+      <h1>Create Invoice</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="client">Client:</label>
+          <ClientList handleClientChange={handleClientChange} />
         </div>
+        <div className="form-group">
+          <label htmlFor="release_date">Release Date:</label>
+          <input type="date" id="release_date" value={release_date} onChange={handleReleaseDateChange} />
+        </div>
+        <div className="form-group">
+          <label>Billing Status:</label>
+          {billing_states.map((billing_status) => (
+            <label key={billing_status.value} className="radio-label">
+              <input
+                type="radio"
+                value={billing_status.value}
+                checked={selectedBilling_status === billing_status.value}
+                onChange={handleBillingStatusChange}
+              />
+              {billing_status.label}
+            </label>
+          ))}
+        </div>
+        <div className="form-group">
+          <label htmlFor="total_amount">Total Amount:</label>
+          <input type="number" id="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
+        </div>
+        <button type="submit" className="submit-button">Create Invoice</button>
+        {successMessage && <p className="success-message">{successMessage}</p>}
+      </form>
+    </div>
+    <div className="right-section">
+      <div className="invoice-items">
+        <h2>Invoice Items:</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {invoiceItems.map((item, index) => (
+              <tr key={index}>
+                <td>
+                  <ItemList className='itemList' handleItemChange={handleItemChange} />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    value={item.qtn}
+                    onChange={(e) => handleQuantityChange(index, e.target.value)}
+                  />
+                </td>
+                <td>{item.total}</td>
+                <td>
+                  <button className='btn btn-danger' onClick={() => handleRemoveItem(index)}>Remove</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button className='btn btn-primary' onClick={handleAddItem}>Add Item</button>
       </div>
     </div>
+  </div>
+  </div>
   );
 };
 

@@ -4,11 +4,11 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  margin-left: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .TopBar {
-  background-color: #34020c;
   color: #fff;
   display: flex;
   justify-content: space-between;
@@ -16,73 +16,59 @@
   margin-bottom: 20px;
 }
 
-.TopBar h1 {
-  font-size: 24px;
+.SearchBar {
+  display: flex;
+  align-items: center;
 }
+
+.SearchInput {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+}
+
+.SearchButton {
+  padding: 10px 20px;
+  background-color: rgb(203, 210, 164);
+  color: var(--color-text-light);
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.SearchButton:hover {
+  background-color: blue;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.btn-primary {
+  margin-left: 10px;
+}
+
+
 
 nav {
   position: relative;
 }
 
-.menu-btn {
-  display: none;
-  cursor: pointer;
-  padding: 10px;
-  background-color: transparent;
-  border: none;
-  transition: transform 0.3s ease;
-}
-
-.menu-icon {
-  display: block;
-  width: 20px;
-  height: 2px;
-  background-color: #fff;
-  position: relative;
-  transition: background-color 0.3s ease;
-}
-
-.menu-icon:before,
-.menu-icon:after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 2px;
-  background-color: #fff;
-  transition: transform 0.3s ease;
-}
-
-.menu-icon:before {
-  top: -6px;
-}
-
-.menu-icon:after {
-  top: 6px;
-}
-
-.menu {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-.menu li {
-  margin-left: 10px;
-}
-
-.menu a {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  color: #fff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.menu a:hover {
-  color: #007bff;
-}
 
 .content {
   background-color: #fff;
