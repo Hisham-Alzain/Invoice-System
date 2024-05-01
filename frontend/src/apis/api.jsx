@@ -80,3 +80,30 @@ export const FetchClients = async(
     return error.response;
 }
 };
+export const CreateInvoice = async(
+  token,
+  client,
+  release_date,
+  selectedBilling_status,
+  total_amount,
+  NewinvoiceItems,
+)=>{
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/api/invoices',{
+      "client_id": client.id,
+      "release_date": release_date,
+      "billing_status": selectedBilling_status,
+      "total_amount": total_amount,
+      "invoice_items": NewinvoiceItems,
+    }, {
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Accept': "application/json",
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return response;
+} catch (error) {
+    return error.response;
+}
+};

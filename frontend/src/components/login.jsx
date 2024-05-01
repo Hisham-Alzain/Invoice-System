@@ -47,6 +47,7 @@ const Login = () => {
     })
       .then((response) => {
         if (!response.ok) {
+          console.log(response);
           throw new Error(response.status);
         } else {
           return response.json();

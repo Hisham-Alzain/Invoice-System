@@ -25,26 +25,14 @@ const CreateInvoice = () => {
       item_id: item.id,
       qtn: item.qtn
     }));
-    // Perform API request to create the invoice using the invoiceData
-    const data = {
-      client_id: client.id,
-      release_date: release_date,
-      billing_status: selectedBilling_status,
-      total_amount: total_amount,
-      invoice_items: NewinvoiceItems,
-    };
-    fetch('http://127.0.0.1:8000/api/invoices', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2',
-      },
-      body: JSON.stringify(
-        data
-      ),
-    })
-      .then((data) => {
-        return data.json();
+    CreateInvoice(
+      client,
+      release_date,
+      selectedBilling_status,
+      total_amount,
+      NewinvoiceItems,
+    ).then((data) => {
+        return data;
       })
       .then((data) => {
         console.log(data);
