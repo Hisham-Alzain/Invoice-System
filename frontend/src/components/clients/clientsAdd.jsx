@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import styles from './css/clientsAdd.module.css'
+import NavBar from '../NavBar';
 
 const CreateClient = () => {
   
@@ -48,25 +50,11 @@ const CreateClient = () => {
 
 
   return (
-    <div className="create-invoice">
-      <div className="sidebar">
-        <h2>Invoice System</h2>
-        <ul>
-          <li>
-            <Link to="/invoices">View Invoices</Link>
-          </li>
-          <li>
-            <Link to="/invoices/create">Create New Invoice</Link>
-          </li>
-          <li>
-            <Link to="/clients">Manage Clients</Link>
-          </li>
-          <li>
-            <Link to="/reports">Generate Reports</Link>
-          </li>
-        </ul>
-      </div>
-      <div className="content">
+    <div className={styles.clientsAdd}>
+       <nav>
+      <NavBar />
+    </nav>
+      <div className={styles.ClientsContent}>
         <h1>Create Client</h1>
         <form onSubmit={handleSubmit}>
           <label>

@@ -1,0 +1,37 @@
+/* clientsAdd.module.css */
+
+.clientsAdd {
+    margin-left: 0;    
+}
+  
+  .ClientsContent {
+    margin-top: 5%;
+    margin-left: 40%;
+  }
+  
+  /* Add styles for the form elements */
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+  
+  button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .success-message {
+   color: #4CAF50;
+  }

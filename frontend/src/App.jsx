@@ -70,7 +70,7 @@ function App() {
             <Route path="/items" element={<ItemList />} />
             <Route path="/clientss" element={<ClientList />} />
             <Route path="/clients" element={<MangeClients />} />
-            <Route path="/clients/add" element={<CreateClient />} />
+            <Route path="/clients/create" element={<CreateClient />} />
             <Route path="/clients/update/:id" element={<UpdateClient />} />
             <Route path="/invoices/create" element={<CreateInvoice />} />
           </Route>
