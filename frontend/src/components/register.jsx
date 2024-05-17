@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import './css/Register.css';
 import { useNavigate } from 'react-router-dom';
+import { LoginContext } from '../App';
 
 const Register = () => {
   const [results, setResults] = useState([]);
@@ -15,6 +16,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const [errorMessage,setErrorMessages]=useState([]);
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -53,14 +55,15 @@ const Register = () => {
             })
         })
         .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.status);
-          }
-          else {
+          
             return response.json();
-          }
         })
         .then((data) => {
+          if(data.errors){
+            console.log(data.errors);
+            setErrorMessages(Object.values(data.errors)); // Update this line
+            throw new Error(response.status);
+          }
           // Do somthing with the token return from Server data['token'] 
           console.log(data)
           // Reset the form fields
@@ -70,7 +73,7 @@ const Register = () => {
           setName('');
           setSelectedType('')
           // Redirect to dashboard
-          navigate('/main');
+          navigate('/login');
         })
         .catch(error => {
           // Handle errors
@@ -130,6 +133,7 @@ const Register = () => {
         </label>
       ))}
     </div>
+    {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Conditional rendering of error message */}
       <button type="submit">Register</button>
     </form>
   );

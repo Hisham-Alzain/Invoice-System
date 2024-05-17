@@ -35,7 +35,7 @@ const MangeClients = () => {
 
   // Render individual client view
   const renderClient = (client) => {
-    const handleDeleteClient = () => {
+    const handleDelete = () => {
         fetch(`http://127.0.0.1:8000/api/clients/${client.id}`, {
           method: 'DELETE',
           headers: {
@@ -59,12 +59,6 @@ const MangeClients = () => {
       <td>{client.name}</td>
       <td>{client.location}</td>
       <td>
-        <Link
-          to={`/clients/${client.id}`}
-          className="btn btn-primary btn-sm"
-        >
-          <BsEye /> View Details
-        </Link>
         <button
           onClick={() => handleEdit(client.id)}
           className="btn btn-warning btn-sm"
@@ -93,7 +87,7 @@ return (
     <NavBar />
     <div className="content">
       <div className="top-bar">
-        <h1>View Clients</h1>
+        <h1 className="title">View Clients</h1>
         <div className="SearchBar">
           <input
             type="text"
@@ -103,7 +97,7 @@ return (
             onChange={handleSearch}
           />
           <button className="SearchButton">Search</button>
-          <Link to="/invoices/create" className="btn btn-primary">
+          <Link to="/clients/create" className="btn btn-primary">
             Create
           </Link>
         </div>

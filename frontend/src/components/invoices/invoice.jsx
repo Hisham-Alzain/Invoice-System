@@ -98,7 +98,7 @@ const Invoices = () => {
       <NavBar />
       <div className="content">
         <div className="top-bar">
-          <h1>View Invoices</h1>
+        <h1 className="title">View Invoices</h1>
           <div className="SearchBar">
             <input
               type="text"
