@@ -1,11 +1,12 @@
 .createInvoice {
+
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
 }
 
-.content {
+.contentCreateInvoice {
   flex-grow: 1;
   display: flex;
   flex-wrap: wrap; /* Added flex-wrap property */
@@ -15,12 +16,14 @@
   width: 100%;
 }
 
-.left-section {
+.left_section {
+  margin-top: 5%;
   flex: 1;
   margin-bottom: 20px; /* Added margin-bottom for spacing */
 }
 
-.right-section {
+.right_section {
+  margin-top: 5%;
   flex: 1;
   margin-bottom: 20px; /* Added margin-bottom for spacing */
 }
@@ -30,8 +33,8 @@
     flex-direction: column; /* Change to column layout on smaller screens */
   }
 
-  .left-section,
-  .right-section {
+  .left_section,
+  .right_section {
     margin-bottom: 0; /* Remove margin-bottom on smaller screens */
   }
 }

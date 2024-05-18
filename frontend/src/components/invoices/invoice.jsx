@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import { LoginContext } from "../../App";
 import { Link } from "react-router-dom";
-import "./css/Invoices.css"; // Import the CSS file for the invoices page
+import styles from "./css/Invoices.module.css"; // Import the CSS file for the invoices page
 import NavBar from "../NavBar";
 import { BsTrash, BsPencil, BsEye } from "react-icons/bs"; // Import the Bootstrap icons
 import { FetchInvoices } from "../../apis/api";
@@ -94,26 +94,26 @@ const Invoices = () => {
   };
 
   return (
-    <div className="invoices-page">
+    <div className={styles.invoices_page}>
       <NavBar />
-      <div className="content">
-        <div className="top-bar">
-        <h1 className="title">View Invoices</h1>
-          <div className="SearchBar">
+      <div className={styles.contentInvoices}>
+        <div className={styles.TopBar}>
+        <h1 className={styles.title}>View Invoices</h1>
+          <div className={styles.SearchBar}>
             <input
               type="text"
-              className="SearchInput"
+              className={styles.SearchInput}
               placeholder="Search..."
               value={searchQuery}
               onChange={handleSearch}
             />
-            <button className="SearchButton">Search</button>
+            <button className={styles.SearchButton}>Search</button>
             <Link to="/invoices/create" className="btn btn-primary">
               Create
             </Link>
           </div>
         </div>
-        <table className="invoices-table">
+        <table className={styles.invoices_table}>
           <thead>
             <tr>
               <th>Invoice ID</th>

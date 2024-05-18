@@ -3,7 +3,7 @@ import { LoginContext } from "../../App";
 import { Link } from "react-router-dom";
 import NavBar from "../NavBar";
 import { BsTrash, BsPencil, BsEye } from "react-icons/bs"; // Import the Bootstrap icons
-import '../invoices/css/Invoices.css'; // Import the CSS file for the invoices page
+import styles from '../invoices/css/Invoices.module.css'; // Import the CSS file for the invoices page
 
 const MangeClients = () => {
   const { loggedIn, setLoggedIn, accessToken, setAccessToken } =
@@ -83,26 +83,26 @@ const handleSearch = (e) => {
   setSearchQuery(e.target.value);
 };
 return (
-  <div className="invoices-page">
+  <div className={styles.invoices_page}>
     <NavBar />
-    <div className="content">
-      <div className="top-bar">
-        <h1 className="title">View Clients</h1>
-        <div className="SearchBar">
+    <div className={styles.contentInvoices}>
+      <div className={styles.TopBar}>
+        <h1 className={styles.title}>View Clients</h1>
+        <div className={styles.SearchBar}>
           <input
             type="text"
-            className="SearchInput"
+            className={styles.SearchInput}
             placeholder="Search..."
             value={searchQuery}
             onChange={handleSearch}
           />
-          <button className="SearchButton">Search</button>
+          <button className={styles.SearchButton}>Search</button>
           <Link to="/clients/create" className="btn btn-primary">
             Create
           </Link>
         </div>
       </div>
-      <table className="invoices-table">
+      <table className={styles.invoices_table}>
         <thead>
           <tr>
             <th>Client ID</th>

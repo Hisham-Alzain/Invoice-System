@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClientList from './clientList';
 import ItemList from './items';
-import './css/CreateInvoice.css';
+import styles from './css/CreateInvoice.module.css';
 import NavBar from '../NavBar';
 //import 'bootstrap/dist/css/bootstrap.css';
 
@@ -105,27 +105,27 @@ const CreateInvoice = () => {
   };
 
   return (
-    <div className='createInvoice'>
+    <div className={styles.createInvoice}>
       <nav>
       <NavBar />
     </nav>
-    <div className="content">
+    <div className={styles.contentCreateInvoice}>
     
-    <div className="left-section">
+    <div className={styles.left_section}>
       <h1>Create Invoice</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label htmlFor="client">Client:</label>
           <ClientList handleClientChange={handleClientChange} />
         </div>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label htmlFor="release_date">Release Date:</label>
           <input type="date" id="release_date" value={release_date} onChange={handleReleaseDateChange} />
         </div>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label>Billing Status:</label>
           {billing_states.map((billing_status) => (
-            <label key={billing_status.value} className="radio-label">
+            <label key={billing_status.value} className={styles.radio_label}>
               <input
                 type="radio"
                 value={billing_status.value}
@@ -136,16 +136,16 @@ const CreateInvoice = () => {
             </label>
           ))}
         </div>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label htmlFor="total_amount">Total Amount:</label>
           <input type="number" id="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
         </div>
-        <button type="submit" className="submit-button">Create Invoice</button>
-        {successMessage && <p className="success-message">{successMessage}</p>}
+        <button type="submit" className={styles.submit_button}>Create Invoice</button>
+        {successMessage && <p className={styles.success_message}>{successMessage}</p>}
       </form>
     </div>
-    <div className="right-section">
-      <div className="invoice-items">
+    <div className={styles.right_section}>
+      <div className={styles.invoice_items}>
         <h2>Invoice Items:</h2>
         <table>
           <thead>
@@ -160,7 +160,7 @@ const CreateInvoice = () => {
             {invoiceItems.map((item, index) => (
               <tr key={index}>
                 <td>
-                  <ItemList className='itemList' handleItemChange={handleItemChange} />
+                  <ItemList className={styles.itemList} handleItemChange={handleItemChange} />
                 </td>
                 <td>
                   <input
