@@ -53,6 +53,9 @@ const MangeClients = () => {
           })
           .catch(error => setError(error));
       };
+      const handleEdit= () => {
+        
+      }
     return (
       <tr key={client.id}>
       <td>{client.id}</td>
