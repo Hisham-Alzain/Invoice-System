@@ -20,6 +20,7 @@ import AnonymousRoutes from "./components/AnonymousRoutes";
 import NavBar from "./components/NavBar";
 import "./App.css";
 import ClientList from "./components/invoices/clientList.jsx";
+import Logout from "./components/Logout.jsx";
 
 export const LoginContext = createContext({});
 
@@ -73,6 +74,7 @@ function App() {
             <Route path="/clients/create" element={<CreateClient />} />
             <Route path="/clients/update/:id" element={<UpdateClient />} />
             <Route path="/invoices/create" element={<CreateInvoice />} />
+            <Route path="/logout" element={<Logout/>}/>
           </Route>
           <Route element={<AnonymousRoutes />}>
             <Route path="login" element={<Login />} />

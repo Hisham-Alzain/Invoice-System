@@ -37,4 +37,4 @@ Route::middleware('auth:sanctum')->group(function(){
     
 });
 Route::get('/isExpired',[AuthController::class,'IsExpired'])->middleware("auth:api");
-
+Route::get('/logout',[AuthController::class,'logout'])->middleware('auth:api');

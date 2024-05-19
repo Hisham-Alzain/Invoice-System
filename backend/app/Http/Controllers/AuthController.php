@@ -59,4 +59,11 @@ class AuthController extends Controller
             'message' => 'Token is valid'
         ], 201);
     }
+
+    public function Logout(Request $request){
+        $request->user()->tokens()->delete();
+        return response()->json([
+            'message'=>"Logout successfully"
+        ],201);
+    }
 }
