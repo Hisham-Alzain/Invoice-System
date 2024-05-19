@@ -46,7 +46,7 @@ const Invoices = () => {
 
   const renderInvoice = (invoice) => {
     const handleEdit = () => {
-      // Handle edit logic for the invoice
+      
       console.log(`Edit invoice with ID: ${invoice.id}`);
     };
 

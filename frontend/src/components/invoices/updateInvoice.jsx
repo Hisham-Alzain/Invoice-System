@@ -2,8 +2,9 @@ import React, { useState,useEffect } from 'react';
 import { Link,useParams } from 'react-router-dom';
 import ClientList from './clientList';
 import ItemList from './items';
-import './css/updateInvoice.css';
+import styles from './css/CreateInvoice.module.css';
 import moment from 'moment';
+import NavBar from '../NavBar';
 
 const UpdateInvoice = () => {
   const billing_states = [
@@ -137,90 +138,83 @@ const UpdateInvoice = () => {
   };
 
   return (
-    <div className="update-invoice">
-      <div className="TopBar">
-        <header>
-          <h1>Invoice System</h1>
-          <nav>
-            <label htmlFor="menu-toggle" className="menu-btn">
-              <span className="menu-icon"></span>
+    <div className={styles.createInvoice}>
+      <nav>
+      <NavBar />
+    </nav>
+    <div className={styles.contentCreateInvoice}>
+    
+    <div className={styles.left_section}>
+      <h1>Update Invoice</h1>
+      <form onSubmit={handleSubmit}>
+        <div className={styles.form_group}>
+          <label htmlFor="client">Client:</label>
+          <ClientList handleClientChange={handleClientChange} />
+        </div>
+        <div className={styles.form_group}>
+          <label htmlFor="release_date">Release Date:</label>
+          <input type="date" id="release_date" value={release_date} onChange={handleReleaseDateChange} />
+        </div>
+        <div className={styles.form_group}>
+          <label>Billing Status:</label>
+          {billing_states.map((billing_status) => (
+            <label key={billing_status.value} className={styles.radio_label}>
+              <input
+                type="radio"
+                value={billing_status.value}
+                checked={selectedBilling_status === billing_status.value}
+                onChange={handleBillingStatusChange}
+              />
+              {billing_status.label}
             </label>
-            <ul className="menu">
-              <li>
-                <Link to="/invoices">View Invoices</Link>
-              </li>
-              <li>
-                <Link to="/invoices/create">Create New Invoice</Link>
-              </li>
-              <li>
-                <Link to="/clients">Manage Clients</Link>
-              </li>
-              <li>
-                <Link to="/reports">Generate Reports</Link>
-              </li>
-            </ul>
-          </nav>
-        </header>
-      </div>
-      <div className="content">
-        <h1>Update Invoice</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="client">Client:</label>
-            <ClientList handleClientChange={handleClientChange} selectedClient={client}/>
-          </div>
-          <div className="form-group">
-            <label htmlFor="release_date">Release Date:</label>
-            <input type="date" id="release_date" value={release_date} onChange={handleReleaseDateChange} />
-          </div>
-          <div className="form-group">
-            <label>Billing Status:</label>
-            {billing_states.map((billing_status) => (
-              <label key={billing_status.value} className="radio-label">
-                <input
-                  type="radio"
-                  value={billing_status.value}
-                  checked={selectedBilling_status === billing_status.value}
-                  onChange={handleBillingStatusChange}
-                />
-                {billing_status.label}
-              </label>
-            ))}
-          </div>
-          <div className="form-group">
-            <label htmlFor="total_amount">Total Amount:</label>
-            <input type="number" id="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
-          </div>
-          <div className="form-group">
-            <h2>Invoice Items</h2>
+          ))}
+        </div>
+        <div className={styles.form_group}>
+          <label htmlFor="total_amount">Total Amount:</label>
+          <input type="number" id="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
+        </div>
+        <button type="submit" className={styles.submit_button}>Create Invoice</button>
+        {successMessage && <p className={styles.success_message}>{successMessage}</p>}
+      </form>
+    </div>
+    <div className={styles.right_section}>
+      <div className={styles.invoice_items}>
+        <h2>Invoice Items:</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
             {invoiceItems.map((item, index) => (
-              <div key={index} className="item-container">
-                <div className="item-label">Item:</div>
-                <div className="item-select">
-                <ItemList handleItemChange={(selectedItem) => handleItemChange(index, selectedItem)} selectedItem={item} />
-                </div>
-                <div className="item-label">Quantity:</div>
-                <div className="item-quantity">
+              <tr key={index}>
+                <td>
+                  <ItemList className={styles.itemList} handleItemChange={handleItemChange} />
+                </td>
+                <td>
                   <input
                     type="number"
                     value={item.qtn}
                     onChange={(e) => handleQuantityChange(index, e.target.value)}
                   />
-                </div>
-                <button type="button" onClick={() => handleRemoveItem(index)}>
-                  Remove Item
-                </button>
-              </div>
+                </td>
+                <td>{item.total}</td>
+                <td>
+                  <button className='btn btn-danger' onClick={() => handleRemoveItem(index)}>Remove</button>
+                </td>
+              </tr>
             ))}
-            <button type="button" onClick={handleAddItem}>
-              Add Item
-            </button>
-          </div>
-          <button type="submit" className="submit-button">update Invoice</button>
-          {successMessage && <p className="success-message">{successMessage}</p>}
-        </form>
+          </tbody>
+        </table>
+        <button className='btn btn-primary' onClick={handleAddItem}>Add Item</button>
       </div>
     </div>
+  </div>
+  </div>
   );
 };
 

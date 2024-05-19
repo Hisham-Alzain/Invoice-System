@@ -20,14 +20,6 @@ class InvoiceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreinvoiceRequest $request)
@@ -54,33 +46,36 @@ class InvoiceController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(invoice $invoice)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateinvoiceRequest $request, invoice $invoice)
+    public function update(UpdateinvoiceRequest $request, Invoice $invoice)
     {
         $validated = $request->validated();
         $invoice_items = $invoice->invoice_items;
-        if ($validated['invoice_items']) {
+    
+        if (isset($validated['invoice_items'])) {
             foreach ($validated['invoice_items'] as $vali) {
-                foreach ($invoice_items as $invoice_item) {
-                    if ($vali['item_id'] == $invoice_item['item_id']) {
-                        $invoice_item->update($vali);
-                    } else {
-                        $vali['invoice_id'] = $invoice['id'];
-                        invoice_item::create($vali);
+                $items = [];
+    
+                foreach ($invoice_items as $inItem) {
+                    $items[] = $inItem['item_id'];
+                }
+    
+                if (in_array($vali['item_id'], $items)) {
+                    foreach ($invoice_items as $inItem) {
+                        if ($inItem['item_id'] == $vali['item_id']) {
+                            $inItem['qtn'] += $vali['qtn'];
+                        }
                     }
+                } else {
+                    $vali['invoice_id'] = $invoice->id;
+                    Invoice_item::create($vali);
                 }
             }
         }
+    
         $invoice->update($validated);
+        $invoice->invoice_items()->saveMany($invoice_items);
         return new InvoiceResource($invoice);
     }
 
