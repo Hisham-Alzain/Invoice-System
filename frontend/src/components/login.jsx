@@ -88,43 +88,51 @@ const Login = () => {
   };
 
   return (
+    <div className={styles.loginPage}>
     <form onSubmit={handleSubmit} className={styles.loginForm}>
-      <div>
-        <label htmlFor="Email">Email:</label>
-        <input
-          type="email"
-          id="Email"
-          value={Email}
-          onChange={handleEmailChange}
-        />
-      </div>
-      <div className={styles.passwordContainer}>
-        <label htmlFor="password">Password:</label>
-        <div className={styles.passwordInput}>
-          <input
-            type={showPassword ? 'text' : 'password'}
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          <button
-            type="button"
-            onClick={handleTogglePassword}
-            className={styles.togglePasswordButton}
-          >
-            {showPassword ? 'Hide' : 'Show'}
-          </button>
-        </div>
-      </div>
-      <button type="submit" className={styles.loginButton}>Login</button>
-      <button type="button" onClick={handleForgotPasswordSubmit} className={styles.forgotPasswordButton}>
-        Forgot Password?
-      </button>
-      <div className={styles.registerLink}>
-        Don't have an account? <Link to="/register">Register</Link>
-      </div>
-      <div className={styles.failMessage}>{failMessage}</div>      
-    </form>
+  <div>
+    <label htmlFor="Email">Email:</label>
+    <input
+      type="email"
+      id="Email"
+      value={Email}
+      onChange={handleEmailChange}
+      className={styles.input}
+    />
+  </div>
+  <div className={styles.passwordContainer}>
+  <label htmlFor="password">Password:</label>
+  <div className={styles.passwordInput}>
+    <input
+      type={showPassword ? 'text' : 'password'}
+      id="password"
+      value={password}
+      onChange={handlePasswordChange}
+      className={styles.input}
+    />
+    <button
+      type="button"
+      onClick={handleTogglePassword}
+      className={styles.togglePasswordButton}
+    >
+      {showPassword ? 'Hide' : 'Show'}
+    </button>
+  </div>
+</div>
+  <button type="submit" className={styles.loginButton}>Login</button>
+  <button
+    type="button"
+    onClick={handleForgotPasswordSubmit}
+    className={styles.forgotPasswordButton}
+  >
+    Forgot Password?
+  </button>
+  <div className={styles.registerLink}>
+    Don't have an account? <Link to="/register">Register</Link>
+  </div>
+  <div className={styles.failMessage}>{failMessage}</div>
+</form>
+</div>
   );
 };
 
