@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import { LoginContext } from "../../App";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import styles from "./css/Invoices.module.css"; // Import the CSS file for the invoices page
 import NavBar from "../NavBar";
 import { BsTrash, BsPencil, BsEye } from "react-icons/bs"; // Import the Bootstrap icons
@@ -10,6 +10,7 @@ import { FetchInvoices } from "../../apis/api";
 const Invoices = () => {
   const { loggedIn, setLoggedIn, accessToken, setAccessToken } =
   useContext(LoginContext);
+  const navigate = useNavigate();
   const initialized = useRef(false);
   const [invoices, setInvoices] = useState([]);
   const [error, setError] = useState(null);
@@ -46,8 +47,7 @@ const Invoices = () => {
 
   const renderInvoice = (invoice) => {
     const handleEdit = () => {
-      
-      console.log(`Edit invoice with ID: ${invoice.id}`);
+      navigate(`/invoices/${invoice.id}/update`);  
     };
 
     const handleDelete = () => {

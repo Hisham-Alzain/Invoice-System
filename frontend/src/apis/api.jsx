@@ -80,7 +80,7 @@ export const FetchClients = async(
     return error.response;
 }
 };
-export const CreateInvoice = async(
+export const CreateInvoiceApi = async(
   token,
   client,
   release_date,

@@ -4,44 +4,39 @@ import { FetchItems } from "../../apis/api";
 import './css/item.css';
 
 const ItemList = ({ handleItemChange }) => {
-  const { loggedIn, setLoggedIn, accessToken, setAccessToken } =
-    useContext(LoginContext);
+  const { loggedIn, accessToken } = useContext(LoginContext);
   const initialized = useRef(false);
   const [selectedItem, setSelectedItem] = useState('');
   const [itemListData, setItemListData] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     if (loggedIn && !initialized.current) {
       initialized.current = true;
       FetchItems(accessToken)
-        .then((response) => response)
+        .then((response) => response.data.data)
         .then((data) => {
-          if (Array.isArray(data.data.data)) {
-            setItemListData(data.data.data);
+          if (Array.isArray(data)) {
+            setItemListData(data);
           } else {
-            throw new Error("Invalid invoice data");
+            throw new Error("Invalid item data");
           }
         })
         .catch((error) => console.log(error));
     }
   }, [loggedIn, accessToken]);
 
-  const handleDropdownToggle = (event) => {
-    event.preventDefault();
-    setShowDropdown(!showDropdown);
-  };
-
-  const handleItemClick = (item) => {
-    setSelectedItem(item);
-    setShowDropdown(false);
-    handleItemChange(item);
+  const handleChange = (event) => {
+    const selectedItemId = event.target.value;
+    const selectedItem = itemListData.find(item => item.id.toString() === selectedItemId);
+    console.log(selectedItem)
+    setSelectedItem(selectedItem);
+    handleItemChange(selectedItem);
   };
 
   return (
     <div>
       <label htmlFor="dropdown"></label>
-      <select id="dropdown" value={selectedItem.id} onChange={handleItemClick}>
+      <select id="dropdown" value={selectedItem?.id || ''} onChange={handleChange}>
         <option value="">-- Please choose an option --</option>
         {itemListData.map((item) => (
           <option key={item.id} value={item.id}>

@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from 'react';
-import { Link,useParams } from 'react-router-dom';
+import React, { useState,useEffect } from 'react'
+import { useNavigate, Link,useParams } from 'react-router-dom';
 import ClientList from './clientList';
 import ItemList from './items';
 import styles from './css/CreateInvoice.module.css';
-import moment from 'moment';
 import NavBar from '../NavBar';
+import moment from 'moment';
 
 const UpdateInvoice = () => {
   const billing_states = [
@@ -13,6 +13,7 @@ const UpdateInvoice = () => {
   ];
 
   const { id } = useParams();
+  const navigate = useNavigate();
   const [release_date, setReleaseDate] = useState('');
   const [selectedBilling_status, setSelectedBilling_status] = useState('');
   const [total_amount, setTotalAmount] = useState('');

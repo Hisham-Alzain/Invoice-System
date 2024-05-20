@@ -1,14 +1,13 @@
-import React, { useState, useEffect,useContext,useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import './css/item.css';
 import { LoginContext } from '../../App';
 import { FetchClients } from '../../apis/api';
 
 const ClientList = ({ handleClientChange }) => {
-  const { loggedIn, setLoggedIn, accessToken, setAccessToken } = useContext(LoginContext);
+  const { loggedIn, accessToken } = useContext(LoginContext);
   const initialized = useRef(false);
-  const [selectedClient, setSelectedClient] = useState('');
+  const [selectedClient, setSelectedClient] = useState(null);
   const [clientListData, setClientListData] = useState([]);
-  const [showDropdown, setShowDropdownProp] = useState(false);
 
   useEffect(() => {
     if (loggedIn && !initialized.current) {
@@ -19,31 +18,32 @@ const ClientList = ({ handleClientChange }) => {
           if (Array.isArray(data.data.data)) {
             setClientListData(data.data.data);
           } else {
-            throw new Error("Invalid invoice data");
+            throw new Error("Invalid client data");
           }
         })
         .catch((error) => console.log(error));
     }
   }, [loggedIn, accessToken]);
 
-  const handleClientClick = (client) => {
-    setSelectedClient(client);
-    setShowDropdownProp(false);
-    handleClientChange(client); // Call the handleClientChange prop function
+  const handleClientChangeInternal = (event) => {
+    const selectedClientId = event.target.value;
+    const selectedClient = clientListData.find(client => client.id.toString() === selectedClientId);
+    setSelectedClient(selectedClient);
+    handleClientChange(selectedClient); // Call the handleClientChange prop function
   };
 
   return (
     <div>
-    <label htmlFor="dropdown"></label>
-    <select id="dropdown" value={selectedClient.id} onChange={handleClientClick}>
-      <option value="">-- Please choose an option --</option>
-      {clientListData.map((item) => (
-        <option key={item.id} value={item.id}>
-          {item.name}
-        </option>
-      ))}
-    </select>
-  </div>
+      <label htmlFor="clientDropdown">Client:</label>
+      <select id="clientDropdown" value={selectedClient ? selectedClient.id : ''} onChange={handleClientChangeInternal}>
+        <option value="">-- Please choose an option --</option>
+        {clientListData.map((client) => (
+          <option key={client.id} value={client.id}>
+            {client.name}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 
