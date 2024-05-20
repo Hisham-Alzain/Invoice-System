@@ -1,34 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./css/invoiceDetails.css";
 import NavBar from "../NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint } from "@fortawesome/free-solid-svg-icons";
+import { LoginContext } from "../../App";
+import { FetchInvoice } from "../../apis/api";
 
 const InvoiceDetails = () => {
+  const { loggedIn, accessToken } = useContext(LoginContext);
   const { id } = useParams();
   const [invoice, setInvoice] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/invoices/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2",
-      },
-    })
+    FetchInvoice(accessToken, id)
       .then((response) => {
-        if (response.ok) {
-          return response.json();
+        if (response.statusText == "OK") {
+          console.log(response);
+          return response;
         } else {
+          console.log(response);
           throw new Error("Failed to fetch invoice details");
         }
       })
       .then((data) => {
-        console.log(data.data);
-        setInvoice(data.data);
+        console.log(data.data.data);
+        setInvoice(data.data.data);
       })
       .catch((error) => {
         setError(error.message);
@@ -41,8 +39,7 @@ const InvoiceDetails = () => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2",
+        Authorization: accessToken,
       },
     })
       .then((response) => {
@@ -70,7 +67,7 @@ const InvoiceDetails = () => {
 
   return (
     <div className="invoice-details">
-      <nav>
+      <nav className="navbar navbar-print">
         <NavBar />
       </nav>
 

@@ -16,6 +16,20 @@ export const FetchUserData = async (token) => {
     return error.response;
   }
 };
+export const FetchInvoice = async (token,id) => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/api/invoices/${id}`, {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': "application/json",
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
 export const CheckToken = async (
   token
 ) => {
@@ -139,6 +153,20 @@ export const LogoutAPI=async(
 )=>{
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/logout', {
+      headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': "application/json",
+          'Authorization': `Bearer ${token}`
+      }
+  });
+  return response;
+} catch (error) {
+  return error.response;
+}
+};
+export const DeleteInvoice=async(token,id)=>{
+  try {
+    const response = await axios.delete(`http://127.0.0.1:8000/api/invoices/${id}`, {
       headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': "application/json",

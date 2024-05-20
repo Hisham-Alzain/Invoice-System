@@ -4,7 +4,7 @@ import { Link,useNavigate } from "react-router-dom";
 import styles from "./css/Invoices.module.css"; // Import the CSS file for the invoices page
 import NavBar from "../NavBar";
 import { BsTrash, BsPencil, BsEye } from "react-icons/bs"; // Import the Bootstrap icons
-import { FetchInvoices } from "../../apis/api";
+import { DeleteInvoice, FetchInvoices } from "../../apis/api";
 
 
 const Invoices = () => {
@@ -49,12 +49,26 @@ const Invoices = () => {
     const handleEdit = () => {
       navigate(`/invoices/${invoice.id}/update`);  
     };
-
+  
     const handleDelete = () => {
       // Handle delete logic for the invoice
-      console.log(`Delete invoice with ID: ${invoice.id}`);
+      DeleteInvoice(accessToken, invoice.id)
+        .then(response => {
+          if (response.status==200) {
+            // Remove the deleted client from the list
+            setInvoices(prevInvoices => prevInvoices.filter(c => c.id.toString() !== invoice.id));
+          } else {
+            console.log(response)
+            throw new Error('Failed to delete client');
+          }
+        })
+        .catch(error => {
+          // Handle error properly
+          console.error(error);
+          // Optionally set an error state here
+        });
     };
-
+  
     return (
       <tr key={invoice.id}>
         <td>{invoice.id}</td>
@@ -69,13 +83,13 @@ const Invoices = () => {
             <BsEye /> View Details
           </Link>
           <button
-            onClick={() => handleEdit(invoice.id)}
+            onClick={handleEdit}
             className="btn btn-warning btn-sm"
           >
             <BsPencil /> Edit
           </button>
           <button
-            onClick={() => handleDelete(invoice.id)}
+            onClick={handleDelete}
             className="btn btn-danger btn-sm"
           >
             <BsTrash /> Delete
@@ -84,6 +98,7 @@ const Invoices = () => {
       </tr>
     );
   };
+  
 
   const filteredInvoices = invoices.filter((invoice) =>
     invoice.client.name.toLowerCase().includes(searchQuery.toLowerCase())

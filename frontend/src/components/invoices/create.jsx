@@ -35,7 +35,7 @@ const CreateInvoice = () => {
     CreateInvoiceApi(accessToken, client, release_date, selectedBilling_status, total_amount, NewinvoiceItems)
       .then((response) => {
         console.log(response);
-        if(response.statusText=='ok'){
+        if(response.status==200){
         setSuccessMessage('Invoice created successfully!');
         setReleaseDate('');
         setSelectedBilling_status('');
