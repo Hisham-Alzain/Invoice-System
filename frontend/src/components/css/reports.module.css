@@ -1,0 +1,50 @@
+.reportsPage {
+    display: flex;
+    margin-top: 5%;
+  }
+  
+  .tableContainer {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tableCell {
+    padding: 20px;
+    vertical-align: top;
+  }
+  
+  /* Styles for the charts */
+  .chartContainer {
+    margin-bottom: 20px;
+  }
+  
+  /* Styles for the table headers */
+  .tableHeader {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Styles for the chart titles */
+  .chartTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Styles for the total profit section */
+  .totalProfitContainer {
+    margin-top: 20px;
+  }
+  
+  .totalProfitTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .totalProfitAmount {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Add more styles as needed */
