@@ -1,55 +1,59 @@
-import React, { useState,useEffect } from 'react'
-import { useNavigate, Link,useParams } from 'react-router-dom';
-import ClientList from './clientList';
-import ItemList from './items';
-import styles from './css/CreateInvoice.module.css';
-import NavBar from '../NavBar';
-import moment from 'moment';
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import ClientList from "./clientList";
+import ItemList from "./items";
+import styles from "./css/CreateInvoice.module.css";
+import NavBar from "../NavBar";
+import moment from "moment";
+import { ShowInvoice } from "../../apis/api";
+import { LoginContext } from "../../App";
 
 const UpdateInvoice = () => {
   const billing_states = [
-    { value: 'paid', label: 'Paid' },
-    { value: 'unpaid', label: 'Unpaid' },
+    { value: "paid", label: "Paid" },
+    { value: "unpaid", label: "Unpaid" },
   ];
+
+  const { loggedIn, accessToken } = useContext(LoginContext);
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const [release_date, setReleaseDate] = useState('');
-  const [selectedBilling_status, setSelectedBilling_status] = useState('');
-  const [total_amount, setTotalAmount] = useState('');
+  const [release_date, setReleaseDate] = useState("");
+  const [selectedBilling_status, setSelectedBilling_status] = useState("");
+  const [total_amount, setTotalAmount] = useState(0);
   const [client, setClient] = useState(null);
   const [invoiceItems, setInvoiceItems] = useState([]);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/invoices/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2',
-      },
-    })
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        setClient(data.data.client);
-        setInvoiceItems(data.data.Invoice_items);
-        setSelectedBilling_status(data.data.billing_status);
-        setTotalAmount(data.data.total_amount);
-        const formattedReleaseDate = moment(data.data.release_date, 'MM/DD/YYYY').format('YYYY-MM-DD');
-        setReleaseDate(formattedReleaseDate);
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        const response = await ShowInvoice(accessToken, id);
+        const data = response.data.data;
+        setClient(data.client);
+        setInvoiceItems(data.Invoice_items.map((item) => ({
+          item: item.item,
+          qtn: item.qtn
+        })));
+        setTotalAmount(data.total_amount)
+        setSelectedBilling_status(data.billing_status);
+        setReleaseDate(data.release_date);
+      } catch (error) {
         console.log(error);
-        setSuccessMessage('An error occurred while updating the Invoice. Please try again.');
-      });
-  }, [id]);
+        setSuccessMessage(
+          "An error occurred while updating the Invoice. Please try again."
+        );
+      }
+    };
+
+    fetchData();
+  }, [id, accessToken]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const NewinvoiceItems = invoiceItems.map(item => ({
+    const NewinvoiceItems = invoiceItems.map((item) => ({
       item_id: item.id,
-      qtn: item.qtn
+      qtn: item.qtn,
     }));
     // Perform API request to create the invoice using the invoiceData
     const data = {
@@ -59,34 +63,34 @@ const UpdateInvoice = () => {
       total_amount: total_amount,
       invoice_items: NewinvoiceItems,
     };
-    fetch( ` http://127.0.0.1:8000/api/invoices/${id} `,{
-      method: 'PUT',
+    fetch(` http://127.0.0.1:8000/api/invoices/${id} `, {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2',
+        "Content-Type": "application/json",
+        "Authorization":
+        `Bearer ${accessToken}`
       },
-      body: JSON.stringify(
-        data
-      ),
+      body: JSON.stringify(data),
     })
       .then((data) => {
         return data.json();
       })
       .then((data) => {
         console.log(data);
-        setSuccessMessage('Invoice updated successfully!');
+        setSuccessMessage("Invoice updated successfully!");
       })
       .catch((error) => {
         console.log(error);
-        setSuccessMessage('An error occurred while updating the invoice. Please try again.');
+        setSuccessMessage(
+          "An error occurred while updating the invoice. Please try again."
+        );
       });
     // Reset the form fields and state after successful submission
-    setReleaseDate('');
-    setSelectedBilling_status('');
-    setTotalAmount('');
+    setReleaseDate("");
+    setSelectedBilling_status("");
+    setTotalAmount("");
     setClient(null);
     setInvoiceItems([]);
-
   };
 
   const handleReleaseDateChange = (event) => {
@@ -101,35 +105,32 @@ const UpdateInvoice = () => {
     setClient(selectedClient);
   };
 
-
-  const handleTotalAmountChange = (event) => {
-    setTotalAmount(event.target.value);
-  };
-
   const handleQuantityChange = (index, quantity) => {
     const updatedItems = [...invoiceItems];
-
-    if (!updatedItems[index]) {
-      updatedItems[index] = {}; // Initialize the item object if it doesn't exist
-    }
-
-    updatedItems[index].qtn = quantity; // Update the qtn property
+    updatedItems[index].qtn = Number(quantity);
     setInvoiceItems(updatedItems);
+
+    const newTotalAmount = updatedItems.reduce(
+      (acc, item) => acc + (item.item?.price || 0) * item.qtn,
+      0
+    );
+    setTotalAmount(newTotalAmount);
   };
 
   const handleItemChange = (index, selectedItem) => {
     const updatedItems = [...invoiceItems];
-    console.log(selectedItem);
-    if (!updatedItems[index]) {
-      updatedItems[index] = {}; // Initialize the item object if it doesn't exist
-    }
-
-    updatedItems[index] = selectedItem; // Update the item_id property
+    updatedItems[index] = { ...updatedItems[index], item: selectedItem };
     setInvoiceItems(updatedItems);
+
+    const newTotalAmount = updatedItems.reduce(
+      (acc, item) => acc + (item.item?.price || 0) * item.qtn,
+      0
+    );
+    setTotalAmount(newTotalAmount);
   };
 
   const handleAddItem = () => {
-    setInvoiceItems([...invoiceItems, { item: null, qtn: 0, price: '' }]);
+    setInvoiceItems([...invoiceItems, { item: null, qtn: 1 }]);
   };
 
   const handleRemoveItem = (index) => {
@@ -141,81 +142,110 @@ const UpdateInvoice = () => {
   return (
     <div className={styles.createInvoice}>
       <nav>
-      <NavBar />
-    </nav>
-    <div className={styles.contentCreateInvoice}>
-    
-    <div className={styles.left_section}>
-      <h1>Update Invoice</h1>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.form_group}>
-          <label htmlFor="client">Client:</label>
-          <ClientList handleClientChange={handleClientChange} />
-        </div>
-        <div className={styles.form_group}>
-          <label htmlFor="release_date">Release Date:</label>
-          <input type="date" id="release_date" value={release_date} onChange={handleReleaseDateChange} />
-        </div>
-        <div className={styles.form_group}>
-          <label>Billing Status:</label>
-          {billing_states.map((billing_status) => (
-            <label key={billing_status.value} className={styles.radio_label}>
-              <input
-                type="radio"
-                value={billing_status.value}
-                checked={selectedBilling_status === billing_status.value}
-                onChange={handleBillingStatusChange}
+        <NavBar />
+      </nav>
+      <div className={styles.contentCreateInvoice}>
+        <div className={styles.left_section}>
+          <h1>Update Invoice</h1>
+          <form onSubmit={handleSubmit}>
+            <div className={styles.form_group}>
+              <label htmlFor="client"></label>
+              <ClientList
+                initialClient={client}
+                handleClientChange={handleClientChange}
               />
-              {billing_status.label}
-            </label>
-          ))}
-        </div>
-        <div className={styles.form_group}>
-          <label htmlFor="total_amount">Total Amount:</label>
-          <input type="number" id="total_amount" value={total_amount} onChange={handleTotalAmountChange} />
-        </div>
-        <button type="submit" className={styles.submit_button}>Create Invoice</button>
-        {successMessage && <p className={styles.success_message}>{successMessage}</p>}
-      </form>
-    </div>
-    <div className={styles.right_section}>
-      <div className={styles.invoice_items}>
-        <h2>Invoice Items:</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoiceItems.map((item, index) => (
-              <tr key={index}>
-                <td>
-                  <ItemList className={styles.itemList} handleItemChange={handleItemChange} />
-                </td>
-                <td>
+            </div>
+            <div className={styles.form_group}>
+              <label htmlFor="release_date">Release Date:</label>
+              <input
+                type="date"
+                id="release_date"
+                value={release_date}
+                onChange={handleReleaseDateChange}
+              />
+            </div>
+            <div className={styles.form_group}>
+              <label>Billing Status:</label>
+              {billing_states.map((billing_status) => (
+                <label
+                  key={billing_status.value}
+                  className={styles.radio_label}
+                >
                   <input
-                    type="number"
-                    value={item.qtn}
-                    onChange={(e) => handleQuantityChange(index, e.target.value)}
+                    type="radio"
+                    value={billing_status.value}
+                    checked={selectedBilling_status === billing_status.value}
+                    onChange={handleBillingStatusChange}
                   />
-                </td>
-                <td>{item.total}</td>
-                <td>
-                  <button className='btn btn-danger' onClick={() => handleRemoveItem(index)}>Remove</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <button className='btn btn-primary' onClick={handleAddItem}>Add Item</button>
+                  {billing_status.label}
+                </label>
+              ))}
+            </div>
+            <div className={styles.form_group}>
+              <label htmlFor="total_amount">Total Amount:</label>
+              <div>{total_amount}</div>
+            </div>
+            <button type="submit" className={styles.submit_button}>
+              Create Invoice
+            </button>
+            {successMessage && (
+              <p className={styles.success_message}>{successMessage}</p>
+            )}
+          </form>
+        </div>
+        <div className={styles.right_section}>
+          <div className={styles.invoice_items}>
+            <h2>Invoice Items:</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoiceItems.map((item, index) => (
+                  <tr key={index}>
+                    <td>
+                    <ItemList
+                      className={styles.itemList}
+                      initialItem={item.item} // Pass the initial item
+                      handleItemChange={(selectedItem) =>
+                        handleItemChange(index, selectedItem)
+                      }
+                    />
+                  </td>
+                    <td>
+                      <input
+                        type="number"
+                        value={item.qtn}
+                        onChange={(e) =>
+                          handleQuantityChange(index, e.target.value)
+                        }
+                      />
+                    </td>
+                    <td>{((item.item?.price || 0) * item.qtn).toFixed(2)}</td>
+                    <td>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => handleRemoveItem(index)}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <button className="btn btn-primary" onClick={handleAddItem}>
+              Add Item
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  </div>
   );
 };
 

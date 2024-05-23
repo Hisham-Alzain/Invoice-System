@@ -3,10 +3,10 @@ import './css/item.css';
 import { LoginContext } from '../../App';
 import { FetchClients } from '../../apis/api';
 
-const ClientList = ({ handleClientChange }) => {
+const ClientList = ({ initialClient, handleClientChange }) => {
   const { loggedIn, accessToken } = useContext(LoginContext);
   const initialized = useRef(false);
-  const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(initialClient);
   const [clientListData, setClientListData] = useState([]);
 
   useEffect(() => {
@@ -24,6 +24,10 @@ const ClientList = ({ handleClientChange }) => {
         .catch((error) => console.log(error));
     }
   }, [loggedIn, accessToken]);
+
+  useEffect(() => {
+    setSelectedClient(initialClient);
+  }, [initialClient]);
 
   const handleClientChangeInternal = (event) => {
     const selectedClientId = event.target.value;

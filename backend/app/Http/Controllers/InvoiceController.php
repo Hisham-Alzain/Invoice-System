@@ -56,20 +56,22 @@ class InvoiceController extends Controller
         if (isset($validated['invoice_items'])) {
             foreach ($validated['invoice_items'] as $vali) {
                 $items = [];
-    
+            
                 foreach ($invoice_items as $inItem) {
                     $items[] = $inItem['item_id'];
                 }
-    
-                if (in_array($vali['item_id'], $items)) {
-                    foreach ($invoice_items as $inItem) {
+            
+                if (isset($vali['item_id']) && in_array($vali['item_id'], $items)) {
+                    foreach ($invoice_items as &$inItem) {
                         if ($inItem['item_id'] == $vali['item_id']) {
                             $inItem['qtn'] += $vali['qtn'];
                         }
                     }
                 } else {
-                    $vali['invoice_id'] = $invoice->id;
-                    Invoice_item::create($vali);
+                    if (isset($vali['item_id'])) {
+                        $vali['invoice_id'] = $invoice->id;
+                        Invoice_item::create($vali);
+                    }
                 }
             }
         }
