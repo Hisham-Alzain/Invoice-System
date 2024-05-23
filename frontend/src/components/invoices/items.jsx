@@ -1,13 +1,14 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import { LoginContext } from "../../App";
 import { FetchItems } from "../../apis/api";
-import './css/item.css';
+import Select from 'react-select';
 
 const ItemList = ({ initialItem, handleItemChange }) => {
   const { loggedIn, accessToken } = useContext(LoginContext);
   const initialized = useRef(false);
   const [selectedItem, setSelectedItem] = useState(initialItem);
   const [itemListData, setItemListData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     if (loggedIn && !initialized.current) {
@@ -25,31 +26,38 @@ const ItemList = ({ initialItem, handleItemChange }) => {
     }
   }, [loggedIn, accessToken]);
 
-  const handleChange = (event) => {
-    const selectedItemId = event.target.value;
-    const selectedItem = itemListData.find(
-      (item) => item.id.toString() === selectedItemId
-    );
-    setSelectedItem(selectedItem);
-    handleItemChange(selectedItem);
+  useEffect(() => {
+    setSelectedItem(initialItem);
+  }, [initialItem]);
+
+  const handleItemChangeInternal = (selectedOption) => {
+    setSelectedItem(selectedOption);
+    handleItemChange(selectedOption); // Call the handleItemChange prop function
   };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredItems = itemListData.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const itemOptions = filteredItems.map(item => ({
+    value: item.id,
+    label: item.name
+  }));
 
   return (
     <div>
-      <label htmlFor="dropdown"></label>
-      <select id="dropdown" value={selectedItem?.id || ''} onChange={handleChange}>
-        <option value="">-- Please choose an option --</option>
-        {initialItem && !selectedItem && (
-          <option value={initialItem.id} selected>
-            {initialItem.name}
-          </option>
-        )}
-        {itemListData.map((item) => (
-          <option key={item.id} value={item.id}>
-            {item.name}
-          </option>
-        ))}
-      </select>
+      <label htmlFor="itemDropdown"></label>
+      <Select
+        id="itemDropdown"
+        value={selectedItem}
+        onChange={handleItemChangeInternal}
+        options={itemOptions}
+        placeholder="Please choose an option"
+      />
     </div>
   );
 };

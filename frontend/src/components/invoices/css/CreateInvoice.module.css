@@ -1,3 +1,4 @@
+/* CreateInvoice.module.css */
 .createInvoice {
   display: flex;
   flex-direction: column;
@@ -17,7 +18,8 @@
   width: 100%;
 }
 
-.left_section, .right_section {
+.left_section,
+.right_section {
   margin-top: 5%;
   flex: 1;
   margin-bottom: 20px;
@@ -27,7 +29,8 @@
   border-radius: 8px;
 }
 
-.left_section h1, .right_section h2 {
+.left_section h1,
+.right_section h2 {
   color: #333333;
 }
 
@@ -41,8 +44,8 @@
   font-weight: bold;
 }
 
-.form_group input[type="date"], 
-.form_group input[type="number"], 
+.form_group input[type="date"],
+.form_group input[type="number"],
 .form_group select {
   width: 100%;
   padding: 8px;
@@ -98,7 +101,8 @@
   border-collapse: collapse;
 }
 
-.invoice_items th, .invoice_items td {
+.invoice_items th,
+.invoice_items td {
   border: 1px solid #dddddd;
   padding: 8px;
   text-align: left;
@@ -148,7 +152,8 @@
     flex-direction: column;
   }
 
-  .left_section, .right_section {
+  .left_section,
+  .right_section {
     margin-bottom: 0;
   }
 }
