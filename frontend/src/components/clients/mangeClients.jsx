@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import { LoginContext } from "../../App";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../NavBar";
 import { BsTrash, BsPencil, BsEye } from "react-icons/bs"; // Import the Bootstrap icons
 import styles from '../invoices/css/Invoices.module.css'; // Import the CSS file for the invoices page
@@ -8,6 +8,7 @@ import styles from '../invoices/css/Invoices.module.css'; // Import the CSS file
 const MangeClients = () => {
   const { loggedIn, setLoggedIn, accessToken, setAccessToken } =
   useContext(LoginContext);
+  const navigate = useNavigate();
   const initialized = useRef(false);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
@@ -20,7 +21,7 @@ const MangeClients = () => {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2"
+        "Authorization": `Bearer ${accessToken}`
       },
     })
       .then(response => response.json())
@@ -35,12 +36,15 @@ const MangeClients = () => {
 
   // Render individual client view
   const renderClient = (client) => {
+    const handleEdit=()=>{
+      navigate(`/clients/update/${client.id}`);  
+    };
     const handleDelete = () => {
         fetch(`http://127.0.0.1:8000/api/clients/${client.id}`, {
           method: 'DELETE',
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer 22|49TmZtWBceqNonxi1AgaXaYmYh8dGPXctHN60zkb19dc2ac2"
+            "Authorization": `Bearer ${accessToken}`
           },
         })
           .then(response => {
@@ -53,9 +57,6 @@ const MangeClients = () => {
           })
           .catch(error => setError(error));
       };
-      const handleEdit= () => {
-        
-      }
     return (
       <tr key={client.id}>
       <td>{client.id}</td>
