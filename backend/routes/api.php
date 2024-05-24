@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -38,3 +39,4 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 Route::get('/isExpired',[AuthController::class,'IsExpired'])->middleware("auth:api");
 Route::get('/logout',[AuthController::class,'logout'])->middleware('auth:api');
+Route::get('/aa',[ReportController::class,'annualMostPayingClientsData']);
