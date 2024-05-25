@@ -39,4 +39,5 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 Route::get('/isExpired',[AuthController::class,'IsExpired'])->middleware("auth:api");
 Route::get('/logout',[AuthController::class,'logout'])->middleware('auth:api');
-Route::get('/aa',[ReportController::class,'annualMostPayingClientsData']);
+Route::get('/aa',[ReportController::class,'annualData']);
+Route::get('/mm',[ReportController::class,'monthlyData']);
