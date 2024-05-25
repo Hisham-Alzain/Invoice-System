@@ -17,13 +17,17 @@ class ReportController extends Controller
         $lastYear = now()->subYear(); // Get the current date minus one year
         $anual_total_amount = 0;
         $items = item::all();
-        foreach ($items as $item) {
+        $items = $items->filter(function ($item) use ($lastYear) {
             $invoice_items = invoice_item::where('item_id', $item->id)->get();
             $item['total'] = 0;
             foreach ($invoice_items as $invoice_item) {
-                $item['total'] += $invoice_item->qtn;
+                $invoice = $invoice_item->invoice;
+                if ($invoice && $invoice->release_date >= $lastYear) {
+                    $item['total'] += $invoice_item->qtn;
+                }
             }
-        }
+            return $item['total'] > 0; // Only include items with non-zero total
+        });
 
         foreach ($clients as $client) {
             $invoices = $client->invoices()
@@ -38,7 +42,7 @@ class ReportController extends Controller
 
         return response()->json([
             "clients" => $clients,
-            "anual total amount" => $anual_total_amount,
+            "anual_total_amount" => $anual_total_amount,
             "items" => $items
         ]);
     }
@@ -48,9 +52,21 @@ class ReportController extends Controller
         $lastYear = now()->subYear(); // Get the current date minus one year
         $monthlyData = [];
         $monthlyTotals = []; // Variable to store the total amount for each month
-
+        $items = item::all();
+        $items = $items->filter(function ($item) use ($lastYear) {
+            $invoice_items = invoice_item::where('item_id', $item->id)->get();
+            $item['total'] = 0;
+            foreach ($invoice_items as $invoice_item) {
+                $invoice = $invoice_item->invoice;
+                if ($invoice && $invoice->release_date >= $lastYear) {
+                    $item['total'] += $invoice_item->qtn;
+                }
+            }
+            return $item['total'] > 0; // Only include items with non-zero total
+        });
         foreach ($clients as $client) {
             $clientData = [
+                'id' => $client->id,
                 'client' => $client,
                 'monthly_amounts' => []
             ];
@@ -68,28 +84,36 @@ class ReportController extends Controller
                     $monthlyAmount += $invoice->total_amount;
                 }
 
-                $clientData['monthly_amounts'][] = [
+                $clientData['monthly_amounts'][$startDate->format('F Y')] = [
                     'month' => $startDate->format('F Y'),
                     'amount' => $monthlyAmount
                 ];
 
                 // Add the monthly amount to the total for the corresponding month
-                if (!isset($monthlyTotals[$startDate->format('F Y')])) {
-                    $monthlyTotals[$startDate->format('F Y')] = 0;
+                $found = false;
+                foreach ($monthlyTotals as &$total) {
+                    if ($total['month'] === $startDate->format('F Y')) {
+                        $total['amount'] += $monthlyAmount;
+                        $found = true;
+                        break;
+                    }
                 }
-                $monthlyTotals[$startDate->format('F Y')] += $monthlyAmount;
+
+                if (!$found) {
+                    $monthlyTotals[] = [
+                        'month' => $startDate->format('F Y'),
+                        'amount' => $monthlyAmount
+                    ];
+                }
             }
 
             $monthlyData[] = $clientData;
         }
 
-        // Add the monthly totals to the response
-        $monthlyData[] = [
-            'monthly_amounts' => $monthlyTotals
-        ];
-
         return response()->json([
-            'monthly_data' => $monthlyData
+            'monthly_data' => $monthlyData,
+            'monthly_totals' => $monthlyTotals,
+             "items" => $items
         ]);
     }
 }

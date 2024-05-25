@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -12,41 +12,37 @@ import {
 } from "recharts";
 import NavBar from "./NavBar";
 import styles from "./css/reports.module.css";
+import { AnnualData, FetchClients, MonthlyData } from "../apis/api";
+import { LoginContext } from "../App";
+import ClientList from "./invoices/clientList";
 
 const ReportPage = () => {
-  // Sample data for most sold items (annual and monthly)
-  const annualMostSoldItemsData = [
-    { name: "Item A", quantitySold: 120 },
-    { name: "Item B", quantitySold: 90 },
-    { name: "Item C", quantitySold: 80 },
-    { name: "Item D", quantitySold: 75 },
-    { name: "Item E", quantitySold: 60 },
-  ];
+  const { accessToken } = useContext(LoginContext);
+  const [annualData, setAnnualData] = useState([]);
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState("February 2024");
 
-  const monthlyMostSoldItemsData = [
-    { name: "Jan", quantitySold: 30 },
-    { name: "Feb", quantitySold: 25 },
-    { name: "Mar", quantitySold: 20 },
-    { name: "Apr", quantitySold: 18 },
-    { name: "May", quantitySold: 15 },
-  ];
+  useEffect(() => {
+    AnnualData(accessToken).then((response) => {
+      if (response.status === 200) {
+        setAnnualData(response.data);
+      } else {
+        console.log(response.statusText);
+      }
+    });
+    MonthlyData(accessToken).then((response) => {
+      if (response.status === 200) {
+        setMonthlyData(response.data);
+      } else {
+        console.log(response.statusText);
+      }
+    });
+  }, []);
 
-  // Sample data for most paying clients (annual and monthly)
-  const annualMostPayingClientsData = [
-    { name: "Client A", totalAmountPaid: 5000 },
-    { name: "Client B", totalAmountPaid: 4000 },
-    { name: "Client C", totalAmountPaid: 3500 },
-    { name: "Client D", totalAmountPaid: 3000 },
-    { name: "Client E", totalAmountPaid: 2500 },
-  ];
-
-  const monthlyMostPayingClientsData = [
-    { name: "Jan", totalAmountPaid: 1500 },
-    { name: "Feb", totalAmountPaid: 1200 },
-    { name: "Mar", totalAmountPaid: 1000 },
-    { name: "Apr", totalAmountPaid: 900 },
-    { name: "May", totalAmountPaid: 800 },
-  ];
+  const handleClientChange = (selectedOption) => {
+    setSelectedClient(selectedOption.value);
+  };
 
   return (
     <div>
@@ -62,33 +58,34 @@ const ReportPage = () => {
                   <h2>Most Sold Items</h2>
                   <div className={styles.chartContainer}>
                     <h3>Annual</h3>
-                    <BarChart
-                      width={400}
-                      height={300}
-                      data={annualMostSoldItemsData}
-                    >
+                    <BarChart width={400} height={300} data={annualData.items}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="quantitySold" fill="#8884d8" />
+                      <Bar dataKey="total" fill="#8884d8" />
                     </BarChart>
                   </div>
                   <div>
                     <h3>Monthly</h3>
-                    <BarChart
-                      width={400}
-                      height={300}
-                      data={monthlyMostSoldItemsData}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="quantitySold" fill="#8884d8" />
-                    </BarChart>
+                    {monthlyData.monthly_totals && (
+                      <div>
+                        {/* Bar chart */}
+                        <BarChart
+                          width={400}
+                          height={300}
+                          data={monthlyData.monthly_totals}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="month" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="amount" fill="#8884d8" />
+                        </BarChart>
+                      </div>
+                    )}
                   </div>
                 </div>
               </td>
@@ -99,8 +96,8 @@ const ReportPage = () => {
                     <h3>Annual</h3>
                     <PieChart width={400} height={300}>
                       <Pie
-                        dataKey="totalAmountPaid"
-                        data={annualMostPayingClientsData}
+                        dataKey="total_amount"
+                        data={annualData.clients}
                         fill="#8884d8"
                         label
                       />
@@ -110,16 +107,38 @@ const ReportPage = () => {
                   </div>
                   <div>
                     <h3>Monthly</h3>
-                    <PieChart width={400} height={300}>
-                      <Pie
-                        dataKey="totalAmountPaid"
-                        data={monthlyMostPayingClientsData}
-                        fill="#8884d8"
-                        label
-                      />
-                      <Tooltip />
-                      <Legend />
-                    </PieChart>
+                    {/* Select month dropdown */}
+                    <select
+                      value={selectedMonth}
+                      onChange={(e) => setSelectedMonth(e.target.value)}
+                    >
+                      <option value="">Select Month</option>
+                      {monthlyData.monthly_data &&
+                        Object.values(
+                          monthlyData.monthly_data[0].monthly_amounts
+                        ).map((item) => (
+                          <option key={item.month} value={item.month}>
+                            {item.month}
+                          </option>
+                        ))}
+                    </select>
+                    {selectedMonth !== "" && monthlyData.monthly_data && (
+                      <BarChart
+                        width={400}
+                        height={300}
+                        data={monthlyData.monthly_data}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="client.name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar
+                          dataKey={`monthly_amounts.${selectedMonth}.amount`}
+                          fill="#8884d8"
+                        />
+                      </BarChart>
+                    )}
                   </div>
                 </div>
               </td>
@@ -128,11 +147,32 @@ const ReportPage = () => {
                   <h2>Total Profit</h2>
                   <div className={styles.totalProfitAmount}>
                     <h3>Annual</h3>
-                    700000
+                    {annualData.anual_total_amount}
                   </div>
-                  <div className={styles.totalProfitAmount}>
+                  <div>
                     <h3>Monthly</h3>
-                    8800
+                    {/* Month selector */}
+                    <select
+                      value={selectedMonth}
+                      onChange={(e) => setSelectedMonth(e.target.value)}
+                    >
+                      <option value="">Select Month</option>
+                      {monthlyData.monthly_totals &&
+                        monthlyData.monthly_totals.map((item) => (
+                          <option key={item.month} value={item.month}>
+                            {item.month}
+                          </option>
+                        ))}
+                    </select>
+                    {/* Display data for selected month */}
+                    {selectedMonth !== "" &&
+                      monthlyData.monthly_totals &&
+                      monthlyData.monthly_totals.map((item) => {
+                        if (item.month === selectedMonth) {
+                          return <p key={item.month}>{item.amount}</p>;
+                        }
+                        return null;
+                      })}
                   </div>
                 </div>
               </td>
