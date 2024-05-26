@@ -21,18 +21,23 @@ const CreateInvoice = () => {
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
-    const newTotalAmount = invoiceItems.reduce((acc, item) => acc + (item.item?.price || 0) * item.qtn, 0);
+    const newTotalAmount = invoiceItems.reduce((acc, item) => {
+      console.log(item);
+      const itemPrice = item.item?.price || 0;
+      const itemQuantity = item.qtn || 0;
+      return acc + itemPrice * itemQuantity;
+    }, 0);
     setTotalAmount(newTotalAmount);
   }, [invoiceItems]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const NewinvoiceItems = invoiceItems.map((item) => ({
-      item_id: item.item.id,
+      item_id: item.item.value,
       qtn: item.qtn,
     }));
-
-    CreateInvoiceApi(accessToken, client, release_date, selectedBilling_status, total_amount, NewinvoiceItems)
+    console.log(client.value)
+    CreateInvoiceApi(accessToken, client.value, release_date, selectedBilling_status, total_amount, NewinvoiceItems)
       .then((response) => {
         console.log(response);
         if(response.status==200){

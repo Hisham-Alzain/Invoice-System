@@ -96,7 +96,7 @@ export const FetchClients = async(
 };
 export const CreateInvoiceApi = async(
   token,
-  client,
+  client_id,
   release_date,
   selectedBilling_status,
   total_amount,
@@ -104,7 +104,7 @@ export const CreateInvoiceApi = async(
 )=>{
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/invoices',{
-      "client_id": client.id,
+      "client_id": client_id,
       "release_date": release_date,
       "billing_status": selectedBilling_status,
       "total_amount": total_amount,

@@ -45,7 +45,8 @@ const ItemList = ({ initialItem, handleItemChange }) => {
 
   const itemOptions = filteredItems.map(item => ({
     value: item.id,
-    label: item.name
+    label: item.name,
+    price: item.price // Include the price property
   }));
 
   return (
