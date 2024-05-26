@@ -2,47 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\invoice_item;
+use Carbon\Carbon;
 use App\Models\item;
 use App\Models\client;
+use App\Models\invoice_item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\annualRequest;
 use App\Http\Resources\ClientCollection;
 
 class ReportController extends Controller
 {
-    public function annualData()
+    public function annualData(annualRequest $request)
     {
+        $validated = $request->validated();
         $clients = client::all();
-        $lastYear = now()->subYear(); // Get the current date minus one year
-        $anual_total_amount = 0;
+        $selectedYear = $validated['year'];
+        $lastYear = Carbon::parse($selectedYear . '-01-01')->subYear();
+        $annual_total_amount = 0;
         $items = item::all();
-        $items = $items->filter(function ($item) use ($lastYear) {
+        $items = $items->filter(function ($item) use ($lastYear, $selectedYear) {
             $invoice_items = invoice_item::where('item_id', $item->id)->get();
             $item['total'] = 0;
             foreach ($invoice_items as $invoice_item) {
                 $invoice = $invoice_item->invoice;
-                if ($invoice && $invoice->release_date >= $lastYear) {
+                if ($invoice && $invoice->release_date && Carbon::parse($invoice->release_date)->year == $selectedYear) {
                     $item['total'] += $invoice_item->qtn;
                 }
             }
             return $item['total'] > 0; // Only include items with non-zero total
         });
-
+    
         foreach ($clients as $client) {
             $invoices = $client->invoices()
                 ->where('release_date', '>=', $lastYear)
+                ->whereYear('release_date', $selectedYear)
                 ->get();
             $client['total_amount'] = 0;
             foreach ($invoices as $invoice) {
                 $client['total_amount'] += $invoice['total_amount'];
-                $anual_total_amount += $invoice['total_amount'];
+                $annual_total_amount += $invoice['total_amount'];
             }
         }
-
+    
         return response()->json([
             "clients" => $clients,
-            "anual_total_amount" => $anual_total_amount,
+            "annual_total_amount" => $annual_total_amount,
             "items" => $items
         ]);
     }
@@ -113,7 +118,7 @@ class ReportController extends Controller
         return response()->json([
             'monthly_data' => $monthlyData,
             'monthly_totals' => $monthlyTotals,
-             "items" => $items
+            "items" => $items
         ]);
     }
 }

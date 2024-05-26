@@ -22,9 +22,10 @@ const ReportPage = () => {
   const [monthlyData, setMonthlyData] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState("February 2024");
+  const [selectedYear, setSelectedYear] = useState("2024");
 
   useEffect(() => {
-    AnnualData(accessToken).then((response) => {
+    AnnualData(accessToken, selectedYear).then((response) => {
       if (response.status === 200) {
         setAnnualData(response.data);
       } else {
@@ -38,7 +39,7 @@ const ReportPage = () => {
         console.log(response.statusText);
       }
     });
-  }, []);
+  }, [selectedYear]);
 
   const handleClientChange = (selectedOption) => {
     setSelectedClient(selectedOption.value);
@@ -58,6 +59,20 @@ const ReportPage = () => {
                   <h2>Most Sold Items</h2>
                   <div className={styles.chartContainer}>
                     <h3>Annual</h3>
+                    <select
+                      value={selectedYear}
+                      onChange={(e) => setSelectedYear(e.target.value)}
+                    >
+                      <option value="">Select Year</option>
+                      {Array.from({ length: 25 }, (_, index) => {
+                        const year = 2000 + index;
+                        return (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        );
+                      })}
+                    </select>
                     <BarChart width={400} height={300} data={annualData.items}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
@@ -147,7 +162,7 @@ const ReportPage = () => {
                   <h2>Total Profit</h2>
                   <div className={styles.totalProfitAmount}>
                     <h3>Annual</h3>
-                    {annualData.anual_total_amount}
+                    {annualData.annual_total_amount}
                   </div>
                   <div>
                     <h3>Monthly</h3>
