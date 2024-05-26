@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\monthlyRequest;
 use Carbon\Carbon;
 use App\Models\item;
 use App\Models\client;
@@ -51,10 +52,12 @@ class ReportController extends Controller
             "items" => $items
         ]);
     }
-    public function monthlyData()
+    public function monthlyData(monthlyRequest $request)
     {
+        $validated = $request->validated();
         $clients = Client::all();
-        $lastYear = now()->subYear(); // Get the current date minus one year
+        $selectedYear = $validated['year']+1;
+        $lastYear = Carbon::parse($selectedYear . '-1-1')->subYear(); // Get the current date minus one year
         $monthlyData = [];
         $monthlyTotals = []; // Variable to store the total amount for each month
         $items = item::all();

@@ -208,9 +208,11 @@ try{
   return error.response;
 }
 };
-export const MonthlyData=async(token)=>{
+export const MonthlyData=async(token,year)=>{
   try{
-    const response = await axios.get(`http://127.0.0.1:8000/api/mm`, {
+    const response = await axios.post(`http://127.0.0.1:8000/api/mm`,{
+      "year":year
+    }, {
         headers: {
             'Content-Type': 'application/json; charset=UTF-8',
             'Accept': "application/json",

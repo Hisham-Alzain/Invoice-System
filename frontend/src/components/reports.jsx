@@ -32,7 +32,7 @@ const ReportPage = () => {
         console.log(response.statusText);
       }
     });
-    MonthlyData(accessToken).then((response) => {
+    MonthlyData(accessToken,selectedYear).then((response) => {
       if (response.status === 200) {
         setMonthlyData(response.data);
       } else {
@@ -84,20 +84,20 @@ const ReportPage = () => {
                   </div>
                   <div>
                     <h3>Monthly</h3>
-                    {monthlyData.monthly_totals && (
+                    { (
                       <div>
                         {/* Bar chart */}
                         <BarChart
                           width={400}
                           height={300}
-                          data={monthlyData.monthly_totals}
+                          data={monthlyData.items}
                         >
                           <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="month" />
+                          <XAxis dataKey="name" />
                           <YAxis />
                           <Tooltip />
                           <Legend />
-                          <Bar dataKey="amount" fill="#8884d8" />
+                          <Bar dataKey="total" fill="#8884d8" />
                         </BarChart>
                       </div>
                     )}

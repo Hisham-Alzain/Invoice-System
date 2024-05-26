@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class annualRequest extends FormRequest
+class monthlyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class annualRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'year'=>['required']
+            'year'=>['required'],
         ];
     }
     protected function failedValidation(Validator $validator)
