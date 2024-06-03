@@ -74,7 +74,7 @@ const Invoices = () => {
         <td>{invoice.id}</td>
         <td>{invoice.release_date}</td>
         <td>{invoice.client.name}</td>
-        <td>{invoice.total_amount}</td>
+        <td>{invoice.total_amount.toLocaleString()}</td>
         <td>
           <Link
             to={`/invoices/${invoice.id}`}

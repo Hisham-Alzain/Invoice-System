@@ -1,3 +1,32 @@
+/* General Styles */
+.dropdown {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  z-index: 1;
+  /* Add other styles as needed */
+}
+
+.dropdown.show {
+  display: block;
+}
+
+.drop_menu{  
+  padding: 0;
+  width: 180px;
+  position: absolute;
+  background: #242526;
+  line-height: 60px;
+  box-shadow: 0 6px 10px #00000026;
+}
+
+.drop_menu li a {
+  display: block;
+  width: 100%;
+  padding: 0 0 0 15px;
+  font-weight: 400;
+  border-radius: 0px;
+}
 .nav {
   position: fixed;
   z-index: 99;
@@ -68,11 +97,15 @@
   font-weight: 500;
 }
 
+.dropdown_container {
+  position: relative;
+}
+/* Styles for mobile */
 .mobile_item {
   display: none;
 }
 
-.profile {  
+.profile {
   color: #f2f2f2;
   display: flex;
   width: 260px;
@@ -99,27 +132,8 @@
   text-decoration: inherit;
 }
 
-.profile_details div{
+.profile_details div {
   height: 49%;
-}
-
-.drop_menu {  
-  padding: 0;
-  width: 180px;
-  position: absolute;
-  background: #242526;
-  line-height: 60px;
-  opacity: 0;
-  visibility: hidden;
-  box-shadow: 0 6px 10px #00000026;
-}
-
-.drop_menu li a {
-  display: block;
-  width: 100%;
-  padding: 0 0 0 15px;
-  font-weight: 400;
-  border-radius: 0px;
 }
 
 .wrapper .btn {
@@ -133,122 +147,6 @@
   position: absolute;
   right: 30px;
   top: 10px;
-}
-
-@media screen and (max-width: 970px) {
-  .wrapper .btn {
-    display: block;
-  }
-.logo{
-  width: 60%;
-}
-  .nav_links {
-    position: fixed;
-    height: 100vh;
-    width: 100%;
-    max-width: 350px;
-    top: 0;
-    left: -100%;
-    background: #242526;
-    display: block;
-    padding: 50px 10px;
-    line-height: 50px;
-    overflow-y: auto;
-    box-shadow: 0px 15px 15px #0000002e;
-    transition: 0.5s;
-  }
-
-  .nav_links_left,
-  .nav_links_right {
-    display: block;
-  }
-
-  .nav_links li {
-    margin: 15px 10px;
-  }
-
-  .nav_links li a {
-    padding: 0 20px;
-    font-size: 20px;
-    display: block;
-  }
-
-  .theme_switch {
-    padding-left: 20px;
-  }
-
-  .mobile_item {
-    display: block;
-    color: #f2f2f2;
-    font-size: 20px;
-    font-weight: 500;
-    padding-left: 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-  }
-
-  .profile {
-    padding-left: 0px;
-  }
-
-  .profile_image {
-    margin-top: 6px;
-    margin-bottom: 4px;
-  }
-
-  .profile_details {
-    padding-top: 8px;
-  }
-
-  .mobile_item:hover {
-    background: #3A3B3C;
-  }
-
-  .drop_menu {
-    position: static;
-    padding-left: 20px;
-    width: 100%;
-    max-height: 0px;    
-    opacity: 1;
-    visibility: visible;
-    overflow: hidden;
-    box-shadow: none;
-    transition: 0.5s;
-  }
-
-  .drop_menu li {
-    margin: 0;
-  }
-
-  .drop_menu li a {
-    border-radius: 5px;
-    font-size: 20px;
-  }
-
-  .wrapper .btn {
-    display: none;
-  }
-
-  .menu_btn:checked ~ .nav_links {
-    left: 0%;
-  }
-
-  .menu_btn:checked ~ .btn.menu_btn {
-    display: none;
-  }
-
-  .close_btn:checked ~ .btn.menu_btn {
-    display: block;
-  }
-
-  .showDrop:checked ~ .drop_menu {
-    max-height: 100%;
-  }
-
-  .nav_links .desktop_item {
-    display: none;
-  }
 }
 
 @media screen and (max-width: 970px) {
