@@ -33,11 +33,12 @@
   width: 100%;
   background: rgb(54, 3, 3);
   top: 0;
+  left: 0;
 }
 
 .wrapper {
   position: relative;
-  max-width: 100%;
+  width: 100%;
   padding: 0px 35px;
   height: 70px;
   line-height: 70px;

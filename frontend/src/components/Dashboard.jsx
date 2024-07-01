@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './css/HomePage.css'; // Import the CSS file for the home page
+import styles from './css/HomePage.module.css'; // Import the CSS file for the home page
 import NavBar from './NavBar';
 
 const Dashboard = () => {
   return (
-    <div className="homepage">
-      <div className="container">
+    <div className={styles.homepage}>
+      <div className={styles.Homecontainer}>
         <NavBar></NavBar>
       </div>
-      <div className="content">
-        <div className="container">
+      <div className={styles.homecontent}>
+        <div className={styles.Homecontainer}>
           <h2>Welcome to the Invoice System</h2>
         </div>
       </div>
