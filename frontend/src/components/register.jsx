@@ -68,6 +68,7 @@ const Register = ({ islogin }) => {
         })
         .catch((error) => {
           // Handle errors
+          console.log(error)
           setFailMessage("Invalid email or password");
         });
     }

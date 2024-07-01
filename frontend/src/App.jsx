@@ -22,6 +22,7 @@ import "./App.css";
 import ClientList from "./components/invoices/clientList.jsx";
 import Logout from "./components/Logout.jsx";
 import ReportPage from "./components/reports.jsx";
+import ProfilePage from "./components/Profile.jsx";
 
 export const LoginContext = createContext({});
 
@@ -67,6 +68,7 @@ function App() {
           <Route path="/topbar" element={<NavBar />} />
           <Route element={<PrivateRoutes />}>
             <Route path="/invoices" element={<Invoices />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/invoices/:id" element={<InvoiceDetails />} />
             <Route path="/invoices/:id/update" element={<UpdateInvoice />} />
             <Route path="/items" element={<ItemList />} />
